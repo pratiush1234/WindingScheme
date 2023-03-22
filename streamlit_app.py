@@ -1,7 +1,30 @@
 import streamlit as st
 import pandas as pd
-# Define a dummy function that takes three inputs and returns an output
 import math
+
+def checkPossiblity(number_of_phases,number_of_slots,number_of_poles):
+    number_of_phases = int(number_of_phases)
+    number_of_slots = int(number_of_slots)
+    number_of_poles = int(number_of_poles)
+    flag = 0
+
+    # Step 2: Calculate internal parameters
+    slot_pitch_mech = 360 / number_of_slots
+    number_of_slots_per_pole_per_phase = number_of_slots/(number_of_poles*number_of_phases)
+
+    for q in range(1,1000):
+        coil_offset= (2 / 3) * (number_of_slots/number_of_poles) * (1+3*q)
+        if coil_offset.is_integer():
+            break
+
+    # Step 3
+    if number_of_phases%3 != 0 or number_of_slots % 3 != 0 or number_of_slots_per_pole_per_phase >2 or coil_offset.is_integer()==False:
+        #print("Double layer winding is not feasible for the given number of poles and slots combination.")
+        flag = 1
+    return coil_offset, flag, number_of_slots_per_pole_per_phase
+
+
+
 def func(number_of_phases,number_of_slots,number_of_poles):
     number_of_phases=int(number_of_phases)
     number_of_slots=int(number_of_slots)
@@ -20,15 +43,11 @@ def func(number_of_phases,number_of_slots,number_of_poles):
         coil_offset= (2 / 3) * (number_of_slots/number_of_poles) * (1+3*q)
         if coil_offset.is_integer():
             break
-    print("Coil offset is: ")
-    print(coil_offset)
-    print("Number of slots per pole per phase is: ")
-    print(number_of_slots_per_pole_per_phase)
 
-    # Step 3
-    if number_of_phases%3 != 0 or number_of_slots % 3 != 0 or number_of_slots_per_pole_per_phase >2 or coil_offset.is_integer()==False:
-        print("Double layer winding is not feasible for the given number of poles and slots combination.")
-        exit()
+    # # Step 3
+    # if number_of_phases%3 != 0 or number_of_slots % 3 != 0 or number_of_slots_per_pole_per_phase >2 or coil_offset.is_integer()==False:
+    #     print("Double layer winding is not feasible for the given number of poles and slots combination.")
+    #     return 0
 
     # Step 4: Define variables
     slot_pitch_mech = 360 / number_of_slots
@@ -133,6 +152,25 @@ def func(number_of_phases,number_of_slots,number_of_poles):
     slotout3=mapp(slotout3)
     return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3
 
+def CheckForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles):
+    number_of_phases=int(number_of_phases)
+    number_of_slots=int(number_of_slots)
+    number_of_poles=int(number_of_poles)
+    flag = 0
+    slot_pitch_mech = 360 / number_of_slots
+    coil_pitch = number_of_slots // number_of_poles
+    slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
+    coil_pitch_elec = coil_pitch * slot_pitch_elec
+    coil_pitch_mech = coil_pitch * slot_pitch_mech
+
+    if coil_pitch_elec == 180:
+        flag = 1
+        #return "Winding is Full Pitched"
+    else:
+        flag = 0
+        #return "Winding is Short Pitched"
+    return flag,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec
+
 
 st.set_page_config(page_title="Winding Scheme")
 
@@ -142,20 +180,37 @@ number_of_phases = st.text_input("No. of Phases", value="")
 number_of_slots = st.text_input("No. of Slots", value="")
 number_of_poles = st.text_input("No. of Poles", value="")
 
+
 # Call the dummy function with the inputs and display the output
 if st.button("Show Analysis"):
-    slotin1,slotout1,slotin2,slotout2,slotin3,slotout3 = func(number_of_phases,number_of_slots,number_of_poles)
-    df1 = pd.DataFrame(list(zip(slotin1, slotout1)),
-                       columns=['In', 'Out'],index = None)
-    df2 = pd.DataFrame(list(zip(slotin2, slotout2)),
-                       columns=['In', 'Out'],index = None)
-    df3 = pd.DataFrame(list(zip(slotin3, slotout3)),
-                       columns=['In', 'Out'],index = None)
-    st.write('Configuration for First Phase')
-    st.table(df1)
-    st.write('Configuration for Second Phase')
-    st.table(df2)
-    st.write('Configuration for Third Phase')
-    st.table(df3)
+    coil_offset, flag, number_of_slots_per_pole_per_phase = checkPossiblity(number_of_phases,number_of_slots,number_of_poles)
+    st.write('Coil Offset:',coil_offset)
+    st.write('Number of slots per pole per phase:',number_of_slots_per_pole_per_phase)
+    if flag == 1:
+        st.header('Double layer winding is not feasible for the given number of poles and slots combination.')
+    else:
+        slotin1,slotout1,slotin2,slotout2,slotin3,slotout3 = func(number_of_phases,number_of_slots,number_of_poles)
 
+        df1 = pd.DataFrame(list(zip(slotin1, slotout1)),
+                       columns=['In', 'Out'],index = None)
+        df2 = pd.DataFrame(list(zip(slotin2, slotout2)),
+                       columns=['In', 'Out'],index = None)
+        df3 = pd.DataFrame(list(zip(slotin3, slotout3)),
+                       columns=['In', 'Out'],index = None)
+        st.write('Configuration for First Phase')
+        st.table(df1)
+        st.write('Configuration for Second Phase')
+        st.table(df2)
+        st.write('Configuration for Third Phase')
+        st.table(df3)
 
+        flag1,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec=CheckForFullPitchedWinding(number_of_phases, number_of_slots, number_of_poles)
+        if flag1 == 1:
+            st.write('Winding is Full Pitched')
+        elif flag1 == 0:
+            st.write('Winding is Short Pitched')
+        st.write('Coil Span:', slot_pitch_mech)
+        st.write('Slot pitch in mechanical degrees:', slot_pitch_mech)
+        st.write('Slot pitch in electrical degrees:', slot_pitch_elec)
+        st.write('Coil pitch in mechanical degrees:', coil_pitch_mech)
+        st.write('Coil pitch in electrical degrees:', coil_pitch_elec)
