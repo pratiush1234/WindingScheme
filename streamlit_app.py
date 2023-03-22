@@ -118,8 +118,6 @@ def func(number_of_phases,number_of_slots,number_of_poles):
                         slotout1.append(slotout[j])
                         set1[j]=True
 
-
-
     slotin2=[0]*len(slotin1)
     slotin3=[0]*len(slotin1)
     slotout2=[0]*len(slotin1)
@@ -183,34 +181,52 @@ number_of_poles = st.text_input("No. of Poles", value="")
 
 # Call the dummy function with the inputs and display the output
 if st.button("Show Analysis"):
-    coil_offset, flag, number_of_slots_per_pole_per_phase = checkPossiblity(number_of_phases,number_of_slots,number_of_poles)
-    st.write('Coil Offset:',coil_offset)
-    st.write('Number of slots per pole per phase:',number_of_slots_per_pole_per_phase)
-    if flag == 1:
-        st.header('Double layer winding is not feasible for the given number of poles and slots combination.')
+    if number_of_phases and number_of_slots and number_of_poles:
+        coil_offset, flag, number_of_slots_per_pole_per_phase = checkPossiblity(number_of_phases,number_of_slots,number_of_poles)
+        st.write('Coil Offset:',coil_offset)
+        st.write('Number of slots per pole per phase:',number_of_slots_per_pole_per_phase)
+        if flag == 1:
+            st.header('Double layer winding is not feasible for the given number of poles and slots combination.')
+        else:
+            slotin1,slotout1,slotin2,slotout2,slotin3,slotout3 = func(number_of_phases,number_of_slots,number_of_poles)
+
+            df1 = pd.DataFrame(list(zip(slotin1, slotout1)),
+                        columns=['In', 'Out'],index = None)
+            df2 = pd.DataFrame(list(zip(slotin2, slotout2)),
+                        columns=['In', 'Out'],index = None)
+            df3 = pd.DataFrame(list(zip(slotin3, slotout3)),
+                        columns=['In', 'Out'],index = None)
+            st.write('Configuration for First Phase')
+            st.table(df1)
+            st.write('Configuration for Second Phase')
+            st.table(df2)
+            st.write('Configuration for Third Phase')
+            st.table(df3)
+
+            flag1,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec=CheckForFullPitchedWinding(number_of_phases, number_of_slots, number_of_poles)
+            if flag1 == 1:
+                st.write('Winding is Full Pitched')
+            elif flag1 == 0:
+                st.write('Winding is Short Pitched')
+            st.write('Coil Span:', slot_pitch_mech)
+            st.write('Slot pitch in mechanical degrees: ', slot_pitch_mech)
+            st.write('Slot pitch in electrical degrees: ', slot_pitch_elec)
+            st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
+            st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
     else:
-        slotin1,slotout1,slotin2,slotout2,slotin3,slotout3 = func(number_of_phases,number_of_slots,number_of_poles)
+        st.write('Please give the valid input')
 
-        df1 = pd.DataFrame(list(zip(slotin1, slotout1)),
-                       columns=['In', 'Out'],index = None)
-        df2 = pd.DataFrame(list(zip(slotin2, slotout2)),
-                       columns=['In', 'Out'],index = None)
-        df3 = pd.DataFrame(list(zip(slotin3, slotout3)),
-                       columns=['In', 'Out'],index = None)
-        st.write('Configuration for First Phase')
-        st.table(df1)
-        st.write('Configuration for Second Phase')
-        st.table(df2)
-        st.write('Configuration for Third Phase')
-        st.table(df3)
+st.write("To know more, give us a look [link](https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html)")
+st.write("Please visit our official website [link](https://www.iitg.ac.in/e_mobility/)")
 
-        flag1,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec=CheckForFullPitchedWinding(number_of_phases, number_of_slots, number_of_poles)
-        if flag1 == 1:
-            st.write('Winding is Full Pitched')
-        elif flag1 == 0:
-            st.write('Winding is Short Pitched')
-        st.write('Coil Span:', slot_pitch_mech)
-        st.write('Slot pitch in mechanical degrees:', slot_pitch_mech)
-        st.write('Slot pitch in electrical degrees:', slot_pitch_elec)
-        st.write('Coil pitch in mechanical degrees:', coil_pitch_mech)
-        st.write('Coil pitch in electrical degrees:', coil_pitch_elec)
+
+
+
+
+
+
+
+
+
+
+
