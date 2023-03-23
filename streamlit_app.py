@@ -321,8 +321,8 @@ if st.button("Show Analysis"):
 #     layout(*myargs)
 
 
-if __name__ == "__main__":
-    footer()
+# if __name__ == "__main__":
+#     footer()
 
-#st.write("To know more, give us a look [link](https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html)")
-#st.write("Please visit our official website [link](https://www.iitg.ac.in/e_mobility/)")
+st.write("To know more, give us a look [link](https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html)")
+st.write("Please visit our official website [link](https://www.iitg.ac.in/e_mobility/)")
