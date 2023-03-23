@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import math
 
+
+
 def checkPossiblity(number_of_phases,number_of_slots,number_of_poles):
     number_of_phases = int(number_of_phases)
     number_of_slots = int(number_of_slots)
@@ -169,12 +171,31 @@ def CheckForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles)
         #return "Winding is Short Pitched"
     return flag,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec
 
-
+number_of_phases = 3
 st.set_page_config(page_title="Winding Scheme")
+page_bg_img = """
+<style>
+[data-testid="stAppViewContainer"]{
+# background-color:#86ff3b;
+# opacity:0.8;
+# background-gradient: #a9d18e
+background: rgb(169,209,142);
+background: linear-gradient(180deg, rgba(169,209,142,1) 0%, rgba(255,255,255,1) 25%);
+}
+[data-testid="stTable"]{
+background-color:#FFFFFF;
+opacity:1;
+}
 
+div {
+  color: #000000;
+}
+</style>
+"""
+st.markdown(page_bg_img,unsafe_allow_html=True)
 st.title("Winding Scheme Configuration")
 
-number_of_phases = st.text_input("No. of Phases", value="")
+#number_of_phases = st.text_input("No. of Phases", value="")
 number_of_slots = st.text_input("No. of Slots", value="")
 number_of_poles = st.text_input("No. of Poles", value="")
 
@@ -196,11 +217,11 @@ if st.button("Show Analysis"):
                         columns=['In', 'Out'],index = None)
             df3 = pd.DataFrame(list(zip(slotin3, slotout3)),
                         columns=['In', 'Out'],index = None)
-            st.write('Configuration for First Phase')
+            st.write('Winding Scheme for Phase A')
             st.table(df1)
-            st.write('Configuration for Second Phase')
+            st.write('Winding Scheme for Phase B')
             st.table(df2)
-            st.write('Configuration for Third Phase')
+            st.write('Winding Scheme for Phase C')
             st.table(df3)
 
             flag1,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec=CheckForFullPitchedWinding(number_of_phases, number_of_slots, number_of_poles)
@@ -208,11 +229,10 @@ if st.button("Show Analysis"):
                 st.write('Winding is Full Pitched')
             elif flag1 == 0:
                 st.write('Winding is Short Pitched')
-            st.write('Coil Span:', slot_pitch_mech)
-            st.write('Slot pitch in mechanical degrees: ', slot_pitch_mech)
-            st.write('Slot pitch in electrical degrees: ', slot_pitch_elec)
-            st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
+
+            st.write('Coil pitch in number of slots or Coil Span:', slot_pitch_mech)
             st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
+            st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
     else:
         st.write('Please give the valid input')
 
