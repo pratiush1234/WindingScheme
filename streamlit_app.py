@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import math
-pip install htbuilder
 
 
 
@@ -247,79 +246,79 @@ if st.button("Show Analysis"):
     else:
         st.write('Please give the valid input')
 
-#####Footer
-from htbuilder import HtmlElement, div, ul, li, br, hr, a, p, img, styles, classes, fonts
-from htbuilder.units import percent, px
-from htbuilder.funcs import rgba, rgb
+# #####Footer
+# from htbuilder import HtmlElement, div, ul, li, br, hr, a, p, img, styles, classes, fonts
+# from htbuilder.units import percent, px
+# from htbuilder.funcs import rgba, rgb
 
 
-def image(src_as_string, **style):
-    return img(src=src_as_string, style=styles(**style))
+# def image(src_as_string, **style):
+#     return img(src=src_as_string, style=styles(**style))
 
 
-def link(link, text, **style):
-    return a(_href=link, _target="_blank", style=styles(**style))(text)
+# def link(link, text, **style):
+#     return a(_href=link, _target="_blank", style=styles(**style))(text)
 
 
-def layout(*args):
+# def layout(*args):
 
-    style = """
-    <style>
-      # MainMenu {visibility: hidden;}
-      footer {visibility: hidden;}
-     .stApp { bottom: 105px; }
-    </style>
-    """
+#     style = """
+#     <style>
+#       # MainMenu {visibility: hidden;}
+#       footer {visibility: hidden;}
+#      .stApp { bottom: 105px; }
+#     </style>
+#     """
 
-    style_div = styles(
-        position="fixed",
-        left=0,
-        bottom=percent(8),
-        margin=px(0, 0, 0, 0),
-        width=percent(100),
-        color="black",
-        text_align="center",
-        height=percent(10),
-        opacity=1
-    )
+#     style_div = styles(
+#         position="fixed",
+#         left=0,
+#         bottom=percent(8),
+#         margin=px(0, 0, 0, 0),
+#         width=percent(100),
+#         color="black",
+#         text_align="center",
+#         height=percent(10),
+#         opacity=1
+#     )
 
-    style_hr = styles(
-        display="block",
-        margin=px(4, 4, "auto", "auto"),
-        border_style="inset",
-        border_width=px(2)
-    )
+#     style_hr = styles(
+#         display="block",
+#         margin=px(4, 4, "auto", "auto"),
+#         border_style="inset",
+#         border_width=px(2)
+#     )
 
-    body = p()
-    foot = div(
-        style=style_div
-    )(
-        hr(
-            style=style_hr
-        ),
-        body
-    )
+#     body = p()
+#     foot = div(
+#         style=style_div
+#     )(
+#         hr(
+#             style=style_hr
+#         ),
+#         body
+#     )
 
-    st.markdown(style, unsafe_allow_html=True)
+#     st.markdown(style, unsafe_allow_html=True)
 
-    for arg in args:
-        if isinstance(arg, str):
-            body(arg)
+#     for arg in args:
+#         if isinstance(arg, str):
+#             body(arg)
 
-        elif isinstance(arg, HtmlElement):
-            body(arg)
+#         elif isinstance(arg, HtmlElement):
+#             body(arg)
 
-    st.markdown(str(foot), unsafe_allow_html=True)
+#     st.markdown(str(foot), unsafe_allow_html=True)
 
 
-def footer():
-    myargs = [
-        "Visit Our Websites   ",
-        link("https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html", " || Project Website|| "),
-        "      ",
-        link("https://www.iitg.ac.in/e_mobility/", "|| Lab Website|| "),
-    ]
-    layout(*myargs)
+# def footer():
+#     myargs = [
+#         "Visit Our Websites   ",
+#         link("https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html", " || Project Website|| "),
+#         "      ",
+#         link("https://www.iitg.ac.in/e_mobility/", "|| Lab Website|| "),
+#     ]
+#     layout(*myargs)
 
 
 if __name__ == "__main__":
