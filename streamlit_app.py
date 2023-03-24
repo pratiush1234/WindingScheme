@@ -162,6 +162,7 @@ def CheckForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles)
     slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
     coil_pitch_elec = coil_pitch * slot_pitch_elec
     coil_pitch_mech = coil_pitch * slot_pitch_mech
+    coil_span_in_slot_pitch = int(number_of_slots/number_of_poles)
 
     if coil_pitch_elec == 180:
         flag = 1
@@ -169,7 +170,7 @@ def CheckForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles)
     else:
         flag = 0
         #return "Winding is Short Pitched"
-    return flag,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec
+    return flag,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec,coil_span_in_slot_pitch
 
 def misc_parameter(number_of_slots,number_of_poles):
     number_of_slots = int(number_of_slots)
@@ -249,15 +250,17 @@ if st.button("Show Analysis"):
             st.write('Winding Scheme for Phase C')
             st.table(df3)
 
-            flag1,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec=CheckForFullPitchedWinding(number_of_phases, number_of_slots, number_of_poles)
+            flag1,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec,coil_span_in_slot_pitch=CheckForFullPitchedWinding(number_of_phases, number_of_slots, number_of_poles)
             if flag1 == 1:
                 st.write('Winding is Full Pitched')
+                st.write('Coil span in slot pitch: ', coil_span_in_slot_pitch)
             elif flag1 == 0:
                 st.write('Winding is Short Pitched')
+                st.write('You can choose any positive integer value lesser than',coil_span_in_slot_pitch,'(if exists)')
+
 
             pitch_factor,distribution_factor,winding_factor = misc_parameter(number_of_slots,number_of_poles)
 
-            st.write('Coil pitch in number of slots or Coil Span:', slot_pitch_mech)
             st.write('Pitch Factor:',pitch_factor)
             st.write('Distribution Factor:',distribution_factor)
             st.write('Winding Factor:',winding_factor)
