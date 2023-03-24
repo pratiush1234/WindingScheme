@@ -190,7 +190,7 @@ def misc_parameter(number_of_slots,number_of_poles):
     beta = (180*number_of_poles)/number_of_slots
 
     # calculation of distribution factor
-    distribution_factor = math.sin((math.pi/180)*0.5*beta*number_of_slots_per_pole_per_phase)/(number_of_slots_per_pole_per_phase*math.sin(0.5*beta))
+    distribution_factor = math.sin((math.pi/180)*number_of_slots_per_pole_per_phase*beta*0.5)/(number_of_slots_per_pole_per_phase*math.sin((math.pi/180)*(beta/2)))
     return pitch_factor, distribution_factor, pitch_factor*distribution_factor
 
 number_of_phases = 3
