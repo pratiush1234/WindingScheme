@@ -224,7 +224,7 @@ number_of_poles = st.text_input("No. of Poles", value="")
 
 # Call the dummy function with the inputs and display the output
 if st.button("Show Analysis"):
-    if number_of_phases and number_of_slots and number_of_poles and number_of_poles.isInteger() and number_of_slots.isInteger() :
+    if number_of_phases and number_of_slots and number_of_poles:
         coil_offset, flag, number_of_slots_per_pole_per_phase = checkPossiblity(number_of_phases,number_of_slots,number_of_poles)
         st.write('Coil Offset:',coil_offset)
         st.write('Number of slots per pole per phase:',number_of_slots_per_pole_per_phase)
