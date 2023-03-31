@@ -340,8 +340,6 @@ st.sidebar.title("Winding Scheme Configuration")
 option = st.sidebar.selectbox("Select the type of Winding",('Single Layer Winding','Double Layer Winding'))
 if st.sidebar.button("Proceed"):
     if option == 'Single Layer Winding':
-        st.write("single layer run hua")
         single_layer_winding_UI()
     elif option == 'Double Layer Winding':
-        st.write("double layer run hua")
         double_layer_winding_UI()
