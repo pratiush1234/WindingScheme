@@ -170,6 +170,11 @@ def CheckForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles)
     else:
         flag = 0
         #return "Winding is Short Pitched"
+    slot_pitch_mech = round(slot_pitch_mech,3)
+    slot_pitch_elec = round(slot_pitch_elec,3)
+    coil_pitch_mech = round(coil_pitch_mech,3)
+    coil_pitch_elec = round(coil_pitch_elec,3)
+    coil_span_in_slot_pitch = round(coil_span_in_slot_pitch,3)
     return flag,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec,coil_span_in_slot_pitch
 
 def misc_parameter(number_of_slots,number_of_poles):
@@ -192,7 +197,10 @@ def misc_parameter(number_of_slots,number_of_poles):
 
     # calculation of distribution factor
     distribution_factor = math.sin((math.pi/180)*number_of_slots_per_pole_per_phase*beta*0.5)/(number_of_slots_per_pole_per_phase*math.sin((math.pi/180)*(beta/2)))
-    return pitch_factor, distribution_factor, pitch_factor*distribution_factor
+    pitch_factor = round(pitch_factor,3)
+    distribution_factor = round(distribution_factor,3)
+    winding_factor = round(pitch_factor*distribution_factor,3)
+    return pitch_factor, distribution_factor, winding_factor
 
 number_of_phases = 3
 st.set_page_config(page_title="Winding Scheme")
