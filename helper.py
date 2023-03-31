@@ -20,15 +20,12 @@ def double_layer_checkPossiblity(number_of_phases,number_of_slots,number_of_pole
     if number_of_phases%3 != 0 or number_of_slots % 3 != 0 or number_of_slots_per_pole_per_phase >2 or coil_offset.is_integer()==False:
         #print("Double layer winding is not feasible for the given number of poles and slots combination.")
         flag = 1
-    return coil_offset, flag, number_of_slots_per_pole_per_phase
+    return round(coil_offset,3), flag, round(number_of_slots_per_pole_per_phase,3)
 
 def double_layer_func(number_of_phases,number_of_slots,number_of_poles):
     number_of_phases=int(number_of_phases)
     number_of_slots=int(number_of_slots)
     number_of_poles=int(number_of_poles)
-    # number_of_phases=3
-    # number_of_slots = 24 #9,24,15
-    # number_of_poles = 4 #6,4,6
 
 
     # Step 2: Calculate internal parameters
@@ -166,7 +163,7 @@ def double_layer_checkForFullPitchedWinding(number_of_phases,number_of_slots,num
     else:
         flag = 0
         #return "Winding is Short Pitched"
-    return flag,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec,coil_span_in_slot_pitch
+    return flag,round(slot_pitch_mech,3),round(slot_pitch_elec,3),round(coil_pitch_mech,3),round(coil_pitch_elec,3),round(coil_span_in_slot_pitch,3)
 
 def double_layer_misc_parameter(number_of_slots,number_of_poles):
     number_of_slots = int(number_of_slots)
@@ -188,7 +185,7 @@ def double_layer_misc_parameter(number_of_slots,number_of_poles):
     number_of_slots_per_pole_per_phase = number_of_slots/(number_of_poles*3)
     # calculation of distribution factor
     distribution_factor = math.sin((math.pi/180)*0.5*beta*number_of_slots_per_pole_per_phase)/(number_of_slots_per_pole_per_phase*math.sin(0.5*beta))
-    return pitch_factor, distribution_factor, pitch_factor*distribution_factor
+    return round(pitch_factor,3), round(distribution_factor,3), round(pitch_factor*distribution_factor,3)
 ##########################################################################################################################################
 
 ################################################# SINGLE LAYER ###############################################################
@@ -201,14 +198,11 @@ def single_layer_checkPossiblity(number_of_slots,number_of_poles):
     # define total number of coils 
     number_of_coils = number_of_slots/2
 
-
     # coils per pole
     coils_per_pole = number_of_slots/(2*number_of_poles)
 
     # coils per phase
     coils_per_phase = number_of_slots/(2*3)
-
-
 
     if number_of_slots % 3 != 0 or number_of_coils.is_integer()==False or coils_per_phase.is_integer()==False:
         flag == 1
@@ -235,7 +229,6 @@ def single_layer_func(number_of_slots,number_of_poles):
     
     # define total number of coils 
     number_of_coils = number_of_slots/2
-
 
     # coils per pole
     coils_per_pole = number_of_slots/(2*number_of_poles)
@@ -266,7 +259,6 @@ def single_layer_func(number_of_slots,number_of_poles):
     theta = [n*coil_pitch_elec for n in range(int(number_of_coils))]
 
     # define slot in and out lists
-
     slotin = [0]*int(number_of_coils)
     slotout = [0]*int(number_of_coils)
     num = 0
