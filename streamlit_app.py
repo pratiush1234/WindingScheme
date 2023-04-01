@@ -35,7 +35,7 @@ if option == 'Double Layer Winding':
     number_of_poles = st.text_input("No. of Poles", value="")
 
     # Call the dummy function with the inputs and display the output
-    if st.button("Show Analysis"):
+    if st.button("Show Winding"):
         if number_of_phases and number_of_slots and number_of_poles:
             coil_offset, flag, number_of_slots_per_pole_per_phase = helper.double_layer_checkPossiblity(number_of_phases,number_of_slots,number_of_poles)
             st.write('Coil Offset:',coil_offset)
@@ -87,7 +87,7 @@ elif(option == 'Single Layer Winding'):
     number_of_poles = st.text_input("No. of Poles", value="")
 
     # Call the dummy function with the inputs and display the output
-    if st.button("Show Analysis"):
+    if st.button("Show Winding"):
         if number_of_phases and number_of_slots and number_of_poles:
             flag = helper.single_layer_checkPossiblity(number_of_slots,number_of_poles)
             #st.write('Coil Offset:',coil_offset)
