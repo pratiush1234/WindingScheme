@@ -375,3 +375,4 @@ def single_layer_func(number_of_slots,number_of_poles):
     slotout3=mapp(slotout3)
 
     return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3
+
