@@ -18,7 +18,6 @@ background: linear-gradient(180deg, rgba(169,209,142,1) 0%, rgba(255,255,255,1) 
 background-color:#FFFFFF;
 opacity:1;
 }
-
 div {
   color: #000000;
 }
@@ -118,3 +117,13 @@ elif(option == 'Single Layer Winding'):
 
 st.write("To know more, give us a look [link](https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html)")
 st.write("Please visit our official website [link](https://www.iitg.ac.in/e_mobility/)")
+
+
+
+
+
+
+
+
+
+
