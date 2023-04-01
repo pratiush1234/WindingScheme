@@ -179,12 +179,18 @@ def double_layer_misc_parameter(number_of_slots,number_of_poles):
     number_of_coils = number_of_slots*2
 
     pitch_factor = math.cos((math.pi/180)*chording_angle/2)
-
+   
     # angular displacement between slots
     beta = (180*number_of_poles)/number_of_slots
     number_of_slots_per_pole_per_phase = number_of_slots/(number_of_poles*3)
     # calculation of distribution factor
-    distribution_factor = math.sin((math.pi/180)*0.5*beta*number_of_slots_per_pole_per_phase)/(number_of_slots_per_pole_per_phase*math.sin(0.5*beta))
+    distribution_factor = math.sin((math.pi/180)*number_of_slots_per_pole_per_phase*beta*0.5)/(number_of_slots_per_pole_per_phase*math.sin((math.pi/180)*(beta/2)))
+
+    # calculation of winding factor
+    winding_factor = pitch_factor*distribution_factor
+    
+    # angular displacement between slots
+    beta = (180*number_of_poles)/number_of_slots
     return round(pitch_factor,3), round(distribution_factor,3), round(pitch_factor*distribution_factor,3)
 ##########################################################################################################################################
 
