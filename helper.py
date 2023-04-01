@@ -225,7 +225,7 @@ def single_layer_checkPossiblity(number_of_slots,number_of_poles):
     
     number_of_spokes = number_of_slots/motor_periodicity
     
-    if number_of_slots % 3 != 0 or number_of_coils.is_integer()==False or coils_per_phase.is_integer()==False or number_of_spokes.is_integer() == False or motor_periodicity.is_integer() == False:
+    if number_of_slots % 3 != 0 or number_of_coils % int(number_of_coils) != 0 or coils_per_phase% int(coils_per_phase) != 0 or number_of_spokes % int(number_of_spokes) != 0 or motor_periodicity%int(motor_periodicity) != 0:
         flag == 1
     return flag
 
