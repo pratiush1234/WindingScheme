@@ -212,18 +212,18 @@ def single_layer_checkPossiblity(number_of_slots,number_of_poles):
         return a
     
     # define total number of coils 
-    number_of_coils = number_of_slots/2
+    number_of_coils = float(number_of_slots/2)
 
     # coils per pole
-    coils_per_pole = number_of_slots/(2*number_of_poles)
+    coils_per_pole = float(number_of_slots/(2*number_of_poles))
 
     # coils per phase
-    coils_per_phase = number_of_slots/(2*3)
+    coils_per_phase = float(number_of_slots/(2*3))
     
     
-    motor_periodicity = gcd(number_of_slots,number_of_poles//2)
+    motor_periodicity = float(gcd(number_of_slots,number_of_poles//2))
     
-    number_of_spokes = number_of_slots/motor_periodicity
+    number_of_spokes = float(number_of_slots/motor_periodicity)
     
     if number_of_slots % 3 != 0 or number_of_coils.is_integer()==False or coils_per_phase.is_integer()==False or number_of_spokes.is_integer()==False or motor_periodicity.is_integer() == False:
         flag = 1
