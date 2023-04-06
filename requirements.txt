@@ -1,0 +1,6 @@
+matplotlib
+streamlit
+pandas
+math
+cmath
+counter
