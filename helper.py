@@ -143,7 +143,7 @@ def double_layer_func(number_of_phases,number_of_slots,number_of_poles):
     slotout2=mapp(slotout2)
     slotin3=mapp(slotin3)
     slotout3=mapp(slotout3)
-    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3
+    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta1
 
 def double_layer_checkForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles):
     number_of_phases=int(number_of_phases)
@@ -192,7 +192,7 @@ def double_layer_misc_parameter(number_of_slots,number_of_poles):
     # angular displacement between slots
     beta = (180*number_of_poles)/number_of_slots
     return round(pitch_factor,3), round(distribution_factor,3), round(pitch_factor*distribution_factor,3)
-##########################################################################################################################################
+##############################################################################################################################
 
 ################################################# SINGLE LAYER ###############################################################
 
@@ -375,4 +375,3 @@ def single_layer_func(number_of_slots,number_of_poles):
     slotout3=mapp(slotout3)
 
     return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3
-
