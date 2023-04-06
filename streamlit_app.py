@@ -135,7 +135,7 @@ elif(option == 'Single Layer Winding'):
                 st.markdown(" :red[Single layer winding is not feasible for the given number of poles and slots combination.]")
                 #st.header('Double layer winding is not feasible for the given number of poles and slots combination.')
             else:
-                slotin1,slotout1,slotin2,slotout2,slotin3,slotout3 = helper.single_layer_func(number_of_slots,number_of_poles)
+                slotin1,slotout1,slotin2,slotout2,slotin3,slotout3,theta_angle = helper.single_layer_func(number_of_slots,number_of_poles)
                 arr = [n for n in range(1,int(number_of_slots)+1)]
                 arr1 = arr[:len(arr)//3]
                 arr2 = arr[len(arr)//3:2*len(arr)//3]
@@ -152,6 +152,44 @@ elif(option == 'Single Layer Winding'):
                 st.table(df2)
                 st.write('Winding Scheme for Phase C')
                 st.table(df3)
+
+
+
+                phasors, magnitude, angle, phasor_sum = emf_polygon.emf_polygon(theta_angle)
+                st.write('Magnitude:', magnitude)
+                st.write('Angle:',angle)
+                fig, ax = plt.subplots(figsize=(8, 8))
+
+                # Initialize the starting point of the polygon at the origin
+                x_start, y_start = 0, 0
+
+                # Loop through the list of phasors and plot them as vectors in a cartesian coordinate system
+                for phasor in phasors:
+                    # Get the real and imaginary components of the phasor
+                    x = phasor.real
+                    y = phasor.imag
+
+                    # Plot the phasor as a vector
+                    ax.quiver(x_start, y_start, x, y, angles='xy', scale_units='xy', scale=1, color='blue')
+
+                    # Update the starting point of the polygon
+                    x_start += x
+                    y_start += y
+
+                # Plot the resultant vector as a red vector
+                ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
+
+                # Set the x and y limits of the plot
+                ax.set_xlim([-5, 5])
+                ax.set_ylim([-5, 5])
+
+                # Set the labels for the x and y axes
+                ax.set_xlabel('Real axis')
+                ax.set_ylabel('Imaginary axis')
+
+                # Add a title to the plot
+                ax.set_title('EMF Polygon')
+                st.pyplot(fig)
 
 
 
