@@ -196,38 +196,52 @@ def double_layer_misc_parameter(number_of_slots,number_of_poles):
 
 ################################################# SINGLE LAYER ###############################################################
 
-def single_layer_checkPossiblity(number_of_slots,number_of_poles):
+# def single_layer_checkPossiblity(number_of_slots,number_of_poles):
+#     number_of_slots = int(number_of_slots)
+#     number_of_poles = int(number_of_poles)
+#     flag = 0
+#     def gcd(a, b):
+#         # Everything divides 0
+#         while(a > 0 and b > 0):
+#             if (a > b):
+#                 a = a % b
+#             else:
+#                 b = b % a 
+#         if (a == 0):
+#             return b
+#         return a
+    
+#     # define total number of coils 
+#     number_of_coils = float(number_of_slots/2)
+
+#     # coils per pole
+#     coils_per_pole = float(number_of_slots/(2*number_of_poles))
+
+#     # coils per phase
+#     coils_per_phase = float(number_of_slots/(2*3))
+    
+    
+#     motor_periodicity = float(gcd(number_of_slots,number_of_poles//2))
+    
+#     number_of_spokes = float(number_of_slots/motor_periodicity)
+    
+#     if number_of_slots % 3 != 0 or number_of_coils.is_integer()==False or coils_per_phase.is_integer()==False or number_of_spokes.is_integer()==False or motor_periodicity.is_integer() == False:
+#         flag = 1
+#     return flag
+
+def single_layer_checkPossiblity(slots, poles):
     number_of_slots = int(number_of_slots)
-    number_of_poles = int(number_of_poles)
-    flag = 0
-    def gcd(a, b):
-        # Everything divides 0
-        while(a > 0 and b > 0):
-            if (a > b):
-                a = a % b
-            else:
-                b = b % a 
-        if (a == 0):
-            return b
-        return a
-    
-    # define total number of coils 
-    number_of_coils = float(number_of_slots/2)
-
-    # coils per pole
-    coils_per_pole = float(number_of_slots/(2*number_of_poles))
-
-    # coils per phase
-    coils_per_phase = float(number_of_slots/(2*3))
-    
-    
-    motor_periodicity = float(gcd(number_of_slots,number_of_poles//2))
-    
-    number_of_spokes = float(number_of_slots/motor_periodicity)
-    
-    if number_of_slots % 3 != 0 or number_of_coils.is_integer()==False or coils_per_phase.is_integer()==False or number_of_spokes.is_integer()==False or motor_periodicity.is_integer() == False:
-        flag = 1
-    return flag
+     number_of_poles = int(number_of_poles)
+    if slots % poles != 0:
+        # The number of slots must be a multiple of the number of poles
+        return False
+    if poles % 2 == 0 and slots % 2 == 0:
+        # If both poles and slots are even, a single layer winding is not possible
+        return False
+    if poles % 2 == 1 and slots % 2 == 1:
+        # If both poles and slots are odd, a single layer winding is not possible
+        return False
+    return True
 
 
 
