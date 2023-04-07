@@ -230,18 +230,27 @@ def double_layer_misc_parameter(number_of_slots,number_of_poles):
 #     return flag
 
 def single_layer_checkPossiblity(slots, poles):
-     number_of_slots = int(number_of_slots)
-     number_of_poles = int(number_of_poles)
-    if slots % poles != 0:
-        # The number of slots must be a multiple of the number of poles
+    slots = int(slots)
+    poles = int(poles)
+    if slots%poles != 0:
         return False
-    if poles % 2 == 0 and slots % 2 == 0:
-        # If both poles and slots are even, a single layer winding is not possible
+    if poles % 2 == 0 and slots % 2 ==0:
         return False
-    if poles % 2 == 1 and slots % 2 == 1:
-        # If both poles and slots are odd, a single layer winding is not possible
+    if poles %2 == 1 and slots %2 == 1:
         return False
     return True
+#      number_of_slots = int(number_of_slots)
+#      number_of_poles = int(number_of_poles)
+#     if slots % poles != 0:
+#         # The number of slots must be a multiple of the number of poles
+#         return False
+#     if poles % 2 == 0 and slots % 2 == 0:
+#         # If both poles and slots are even, a single layer winding is not possible
+#         return False
+#     if poles % 2 == 1 and slots % 2 == 1:
+#         # If both poles and slots are odd, a single layer winding is not possible
+#         return False
+#     return True
 
 
 
