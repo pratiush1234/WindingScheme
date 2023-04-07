@@ -230,7 +230,7 @@ def double_layer_misc_parameter(number_of_slots,number_of_poles):
 #     return flag
 
 def single_layer_checkPossiblity(slots, poles):
-    number_of_slots = int(number_of_slots)
+     number_of_slots = int(number_of_slots)
      number_of_poles = int(number_of_poles)
     if slots % poles != 0:
         # The number of slots must be a multiple of the number of poles
