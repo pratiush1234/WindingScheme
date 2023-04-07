@@ -205,16 +205,16 @@ def single_layer_checkPossiblity(number_of_slots,number_of_poles):
     factor = number_of_slots/(3*gcd1)
     
     
-#     def gcd(a, b):
-#         # Everything divides 0
-#         while(a > 0 and b > 0):
-#             if (a > b):
-#                 a = a % b
-#             else:
-#                 b = b % a 
-#         if (a == 0):
-#             return b
-#         return a
+    def gcd(a, b):
+        # Everything divides 0
+        while(a > 0 and b > 0):
+            if (a > b):
+                a = a % b
+            else:
+                b = b % a 
+        if (a == 0):
+            return b
+        return a
     
     # define total number of coils 
     number_of_coils = float(number_of_slots/2)
