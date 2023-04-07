@@ -234,9 +234,7 @@ def single_layer_checkPossiblity(slots, poles):
     poles = int(poles)
     if slots%poles != 0:
         return False
-    if poles % 2 == 0 and slots % 2 ==0:
-        return False
-    if poles %2 == 1 and slots %2 == 1:
+    if (poles % 2 == 0 and slots % 4 != 0) or (poles % 2 != 0 and slots % 2 == 0):
         return False
     return True
 #      number_of_slots = int(number_of_slots)
