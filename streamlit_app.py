@@ -131,7 +131,7 @@ elif(option == 'Single Layer Winding'):
             flag = helper.single_layer_checkPossiblity(number_of_slots,number_of_poles)
             #st.write('Coil Offset:',coil_offset)
             #st.write('Number of slots per pole per phase:',number_of_slots_per_pole_per_phase)
-            if flag == 1:
+            if flag == True:
                 st.markdown(" :red[Single layer winding is not feasible for the given number of poles and slots combination.]")
                 #st.header('Double layer winding is not feasible for the given number of poles and slots combination.')
             else:
