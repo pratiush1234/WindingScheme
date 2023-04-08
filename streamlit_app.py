@@ -43,7 +43,6 @@ if option == 'Double Layer Winding':
             st.write('Number of slots per pole per phase:',number_of_slots_per_pole_per_phase)
             if flag == 1:
                 st.markdown(" :red[Double layer winding is not feasible for the given number of poles and slots combination.]")
-                #st.header('Double layer winding is not feasible for the given number of poles and slots combination.')
             else:
                 slotin1,slotout1,slotin2,slotout2,slotin3,slotout3,theta_angle = helper.double_layer_func(number_of_phases,number_of_slots,number_of_poles)
                 arr = [n for n in range(1,int(number_of_slots)+1)]
@@ -73,17 +72,15 @@ if option == 'Double Layer Winding':
 
                 pitch_factor, distribution_factor, winding_factor = helper.double_layer_misc_parameter(number_of_slots,number_of_poles)
 
-                #st.write('Coil pitch in number of slots or Coil Span:', slot_pitch_mech)
                 st.write('Pitch Factor:',pitch_factor)
                 st.write('Distribution Factor:',distribution_factor)
                 st.write('Winding Factor:',winding_factor)
                 st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
-                phasors, magnitude, angle, phasor_sum = emf_polygon.emf_polygon(theta_angle)
-                st.write('Magnitude:', magnitude)
-                st.write('Angle:',angle)
-                fig, ax = plt.subplots(figsize=(8, 8))
+                phasors, magnitude, angle, phasor_sum,index_angle = emf_polygon.emf_polygon(theta_angle)
+                st.write('Magnitude:', magnitude, 'pu')
+                fig, ax = plt.subplots(figsize=(4, 4))
 
                 # Initialize the starting point of the polygon at the origin
                 x_start, y_start = 0, 0
@@ -108,14 +105,10 @@ if option == 'Double Layer Winding':
                 ax.set_xlim([-5, 5])
                 ax.set_ylim([-5, 5])
 
-                # Set the labels for the x and y axes
-                ax.set_xlabel('Real axis')
-                ax.set_ylabel('Imaginary axis')
-
                 # Add a title to the plot
-                ax.set_title('Vector Polygon')
+                ax.set_title('EMF Polygon')
                 st.pyplot(fig)
-
+                st.write('EMF Magnitude:', magnitude, 'pu')
 
         else:
             st.write('Please give the valid input')
@@ -133,7 +126,6 @@ elif(option == 'Single Layer Winding'):
             #st.write('Number of slots per pole per phase:',number_of_slots_per_pole_per_phase)
             if flag == 1:
                 st.markdown(" :red[Single layer winding is not feasible for the given number of poles and slots combination.]")
-                #st.header('Double layer winding is not feasible for the given number of poles and slots combination.')
             else:
                 slotin1,slotout1,slotin2,slotout2,slotin3,slotout3,theta_angle = helper.single_layer_func(number_of_slots,number_of_poles)
                 arr = [n for n in range(1,int(number_of_slots)+1)]
@@ -152,13 +144,25 @@ elif(option == 'Single Layer Winding'):
                 st.table(df2)
                 st.write('Winding Scheme for Phase C')
                 st.table(df3)
+                flag1,slot_pitch_mech,slot_pitch_elec,coil_pitch_mech,coil_pitch_elec,coil_span_in_slot_pitch=helper.single_layer_checkForFullPitchedWinding(number_of_phases, number_of_slots, number_of_poles)
+                if flag1 == 1:
+                    st.write('Winding is Full Pitched')
+                    st.write('Coil span in slot pitch: ', coil_span_in_slot_pitch)
+                elif flag1 == 0:
+                    st.write('Winding is Short Pitched')
+                    st.write('You can choose any positive integer value lesser than',coil_span_in_slot_pitch,'(if exists)')
 
 
+                pitch_factor, distribution_factor, winding_factor = helper.single_layer_misc_parameter(number_of_slots,number_of_poles)
+                st.write('Pitch Factor:',pitch_factor)
+                st.write('Distribution Factor:',distribution_factor)
+                st.write('Winding Factor:',winding_factor)
+                st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
+                st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
-                phasors, magnitude, angle, phasor_sum = emf_polygon.emf_polygon(theta_angle)
-                st.write('Magnitude:', magnitude)
-                st.write('Angle:',angle)
-                fig, ax = plt.subplots(figsize=(8, 8))
+
+                phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
+                fig, ax = plt.subplots(figsize=(4, 4))
 
                 # Initialize the starting point of the polygon at the origin
                 x_start, y_start = 0, 0
@@ -183,16 +187,10 @@ elif(option == 'Single Layer Winding'):
                 ax.set_xlim([-5, 5])
                 ax.set_ylim([-5, 5])
 
-                # Set the labels for the x and y axes
-                ax.set_xlabel('Real axis')
-                ax.set_ylabel('Imaginary axis')
-
                 # Add a title to the plot
                 ax.set_title('EMF Polygon')
                 st.pyplot(fig)
-
-
-
+                st.write('EMF Magnitude:', magnitude, 'pu')
             
 
 
