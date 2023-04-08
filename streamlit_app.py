@@ -78,37 +78,43 @@ if option == 'Double Layer Winding':
                 st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
-                phasors, magnitude, angle, phasor_sum,index_angle = emf_polygon.emf_polygon(theta_angle)
-                st.write('Magnitude:', magnitude, 'pu')
-                fig, ax = plt.subplots(figsize=(4, 4))
 
-                # Initialize the starting point of the polygon at the origin
-                x_start, y_start = 0, 0
+                phasor_list = emf_polygon.driver_code(theta_angle)
+                for unique_phasor in phasor_list:
+                    phasors = unique_phasor[0]
+                    magnitude = unique_phasor[2]
+                    phasor_sum = unique_phasor[1]
+                    #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
+                    fig, ax = plt.subplots(figsize=(4, 4))
 
-                # Loop through the list of phasors and plot them as vectors in a cartesian coordinate system
-                for phasor in phasors:
-                    # Get the real and imaginary components of the phasor
-                    x = phasor.real
-                    y = phasor.imag
+                    # Initialize the starting point of the polygon at the origin
+                    x_start, y_start = 0, 0
 
-                    # Plot the phasor as a vector
-                    ax.quiver(x_start, y_start, x, y, angles='xy', scale_units='xy', scale=1, color='blue')
+                    # Loop through the list of phasors and plot them as vectors in a cartesian coordinate system
+                    for phasor in phasors:
+                        # Get the real and imaginary components of the phasor
+                        x = phasor.real
+                        y = phasor.imag
 
-                    # Update the starting point of the polygon
-                    x_start += x
-                    y_start += y
+                        # Plot the phasor as a vector
+                        ax.quiver(x_start, y_start, x, y, angles='xy', scale_units='xy', scale=1, color='blue')
 
-                # Plot the resultant vector as a red vector
-                ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
+                        # Update the starting point of the polygon
+                        x_start += x
+                        y_start += y
 
-                # Set the x and y limits of the plot
-                ax.set_xlim([-5, 5])
-                ax.set_ylim([-5, 5])
+                    # Plot the resultant vector as a red vector
+                    ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
-                # Add a title to the plot
-                ax.set_title('EMF Polygon')
-                st.pyplot(fig)
-                st.write('EMF Magnitude:', magnitude, 'pu')
+                    # Set the x and y limits of the plot
+                    ax.set_xlim([-10, 10])
+                    ax.set_ylim([-10, 10])
+
+                    # Add a title to the plot
+                    ax.set_title('EMF Polygon')
+                    st.pyplot(fig)
+                    #st.write("Magnitude: ", magnitude," pu")
+                    st.write('EMF Magnitude:', magnitude, 'pu')
 
         else:
             st.write('Please give the valid input')
@@ -160,39 +166,44 @@ elif(option == 'Single Layer Winding'):
                 st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
+                phasor_list = emf_polygon.driver_code(theta_angle)
 
-                phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
-                fig, ax = plt.subplots(figsize=(4, 4))
+                for unique_phasor in phasor_list:
+                    phasors = unique_phasor[0]
+                    magnitude = unique_phasor[2]
+                    phasor_sum = unique_phasor[1]
+                    #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
+                    fig, ax = plt.subplots(figsize=(4, 4))
 
-                # Initialize the starting point of the polygon at the origin
-                x_start, y_start = 0, 0
+                    # Initialize the starting point of the polygon at the origin
+                    x_start, y_start = 0, 0
 
-                # Loop through the list of phasors and plot them as vectors in a cartesian coordinate system
-                for phasor in phasors:
-                    # Get the real and imaginary components of the phasor
-                    x = phasor.real
-                    y = phasor.imag
+                    # Loop through the list of phasors and plot them as vectors in a cartesian coordinate system
+                    for phasor in phasors:
+                        # Get the real and imaginary components of the phasor
+                        x = phasor.real
+                        y = phasor.imag
 
-                    # Plot the phasor as a vector
-                    ax.quiver(x_start, y_start, x, y, angles='xy', scale_units='xy', scale=1, color='blue')
+                        # Plot the phasor as a vector
+                        ax.quiver(x_start, y_start, x, y, angles='xy', scale_units='xy', scale=1, color='blue')
 
-                    # Update the starting point of the polygon
-                    x_start += x
-                    y_start += y
+                        # Update the starting point of the polygon
+                        x_start += x
+                        y_start += y
 
-                # Plot the resultant vector as a red vector
-                ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
+                    # Plot the resultant vector as a red vector
+                    ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
-                # Set the x and y limits of the plot
-                ax.set_xlim([-5, 5])
-                ax.set_ylim([-5, 5])
+                    # Set the x and y limits of the plot
+                    ax.set_xlim([-10, 10])
+                    ax.set_ylim([-10, 10])
 
-                # Add a title to the plot
-                ax.set_title('EMF Polygon')
-                st.pyplot(fig)
-                st.write('EMF Magnitude:', magnitude, 'pu')
+                    # Add a title to the plot
+                    ax.set_title('EMF Polygon')
+                    st.pyplot(fig)
+                    #st.write("Magnitude: ", magnitude," pu")
+                    st.write('EMF Magnitude:', magnitude, 'pu')
             
-
 
 
 st.write("To know more, give us a look [link](https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html)")
