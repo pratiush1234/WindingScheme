@@ -289,15 +289,11 @@ def single_layer_func(number_of_slots,number_of_poles):
     number_of_spokes = number_of_slots/motor_periodicity
 
     coil_number = [i for i in range(1,(number_of_slots+2)//2)]
-
     # define coil pitch
     coil_pitch_mech = 360/number_of_coils
-
     coil_pitch_elec = (number_of_poles/2)*coil_pitch_mech
-
     # define slot angles 
     theta = [n*coil_pitch_elec for n in range(int(number_of_coils))]
-
     # define slot in and out lists
     slotin = [0]*int(number_of_coils)
     slotout = [0]*int(number_of_coils)
@@ -308,10 +304,8 @@ def single_layer_func(number_of_slots,number_of_poles):
             slotin[iter_] = num + 1
             num = num+1
             iter_ = iter_+1
-        num = num + int(number_of_coils)//motor_periodicity 
-    
+        num = num + int(number_of_coils)//motor_periodicity    
     slotout = [slotin[i]+int(number_of_coils)//motor_periodicity for i in range(len(slotin))]
-
     # Fill slotin and slotout lists
     for i in range(0, int(number_of_coils)):
         if slotin[i] > int(number_of_coils):
@@ -394,3 +388,51 @@ def single_layer_func(number_of_slots,number_of_poles):
     slotout3=mapp(slotout3)
 
     return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta1
+
+def single_layer_misc_parameter(number_of_slots,number_of_poles):
+    number_of_slots = int(number_of_slots)
+    number_of_poles = int(number_of_poles)
+    # Step 4: Define variables
+    slot_pitch_mech = 360 / number_of_slots
+    slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
+    coil_span = int(number_of_slots / number_of_poles)
+    coil_pitch = coil_span * slot_pitch_elec
+    # calculation for pitch factor // give angles in radians 
+    chording_angle = (180 - coil_pitch) / 2
+    number_of_coils = number_of_slots*2
+
+    pitch_factor = math.cos((math.pi/180)*chording_angle/2)
+   
+    # angular displacement between slots
+    beta = (180*number_of_poles)/number_of_slots
+    number_of_slots_per_pole_per_phase = number_of_slots/(number_of_poles*3)
+    # calculation of distribution factor
+    distribution_factor = math.sin((math.pi/180)*number_of_slots_per_pole_per_phase*beta*0.5)/(number_of_slots_per_pole_per_phase*math.sin((math.pi/180)*(beta/2)))
+
+    # calculation of winding factor
+    winding_factor = pitch_factor*distribution_factor
+    
+    # angular displacement between slots
+    beta = (180*number_of_poles)/number_of_slots
+    return round(pitch_factor,3), round(distribution_factor,3), round(pitch_factor*distribution_factor,3)
+
+
+def single_layer_checkForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles):
+    number_of_phases=int(number_of_phases)
+    number_of_slots=int(number_of_slots)
+    number_of_poles=int(number_of_poles)
+    flag = 0
+    slot_pitch_mech = 360 / number_of_slots
+    coil_pitch = number_of_slots // number_of_poles
+    slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
+    coil_pitch_elec = coil_pitch * slot_pitch_elec
+    coil_pitch_mech = coil_pitch * slot_pitch_mech
+    coil_span_in_slot_pitch = int(number_of_slots/number_of_poles)
+
+    if coil_pitch_elec == 180:
+        flag = 1
+        #return "Winding is Full Pitched"
+    else:
+        flag = 0
+        #return "Winding is Short Pitched"
+    return flag,round(slot_pitch_mech,3),round(slot_pitch_elec,3),round(coil_pitch_mech,3),round(coil_pitch_elec,3),round(coil_span_in_slot_pitch,3)
