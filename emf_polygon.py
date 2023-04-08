@@ -1,40 +1,101 @@
-
 import math
 import cmath
-from collections import Counter
+import itertools
 
-def emf_polygon(phase_angle):
+def create_comb(s,dic,f):
+    ln = len(dic[f])
+    s_filtered = [t for t in s if len(t) <= ln]
 
-    phasor_dict = {}
-    for i, val in enumerate(phase_angle):
-        if val in phasor_dict:
-            phasor_dict[val][0] += 1
-            phasor_dict[val][1].append(i)
-        else:
-            phasor_dict[val] = [1, [i]]
+    t = []
+    combinations = []
+    for i in range(1, ln+1):
+        for comb in itertools.combinations(s_filtered, i):
+            l = []
+            for m in comb:
+                for d in m:
+                    l.append(d)
+            l = set(l)
+            e = list(len(t) for t in comb)
+            if sum(len(t) for t in comb) == ln and len(l)==ln and e not in t:
+                combinations.append(list(comb))
+                t.append(e)
+    return combinations
 
-    phasor_sum = 0
-    index_list = []
-    for key, value in phasor_dict.items():
-        index_list.append(value[1])
+def generate_combinations(numbers):
+    # Generate all possible values for each element
+    values = [range(n) for n in numbers]
+    
+    # Use itertools.product to generate all combinations
+    combinations = itertools.product(*values)
+    return list(combinations)
+
+def combinations_emf(theta):      
+    coil_number = [i for i in range(1,len(theta)+1)]
+    dic = {}
+
+    for i in range(len(theta)):
+        if theta[i] not in dic:
+            dic[theta[i]] = []
+        dic[theta[i]].append(coil_number[i])
+    new = {}
+    for s in dic.keys():
+        new[s] = []
+        num = dic[s]
+        for i in range(1,len(num)+1):
+            new[s] = new[s] + list(itertools.combinations(num, i))
+    final = {}
+    for s in dic.keys():
+        final[s] = create_comb(new[s],dic,s)
+    ch_fin = list(final.values())
+    numbers = [len(final[j]) for j in dic]
+    combinations = generate_combinations(numbers)
+    end = []
+
+    for o in combinations:
+        li = []
+        for i in range(len(o)):
+            for a in ch_fin[i][o[i]]:
+                li.append(a)
+        end.append(li)
+    return end,dic
+    
+def returnKey(dic,ele):
+    for key, value in dic.items():
+        if ele in value:
+            return key
         
+def phasor_finder(comb, theta, dic):
+    coils = []
+    ## Handling parallel cases
+    for combination in comb:
+        key = returnKey(dic,combination[0])
+        temp = [1,key]
+        coils.append(temp)
+        temp= []
+    return coils
 
-    for key, value in phasor_dict.items():
-        if value[0]%2 == 0 and phase_angle.count(key) > 1:
-            phasor_dict[key][0] = 1
-
-        elif value[0]%2 == 1 and phase_angle.count(key) > 1:
-            phasor_dict[key][0] = 2
+def resultant_phasor(coils):
     phasor_sum = 0
     phasors = []
-
-    for angle, magnitude in phasor_dict.items():
-        phasor = cmath.rect(magnitude[0], math.radians(angle))
+    for pair in coils:
+        #print(pair)
+        magnitude = pair[0]
+        angle = pair[1]
+        #print(angle)
+        phasor = cmath.rect(magnitude, math.radians(angle))
         phasors.append(phasor)
-
     phasor_sum = sum(phasors)
 
     magnitude = abs(phasor_sum)
-    angle = cmath.phase(phasor_sum)
+    #angle = cmath.phase(phasor_sum)
+    return [phasors, phasor_sum, round(magnitude,3)]
 
-    return phasors, round(magnitude,3), angle,phasor_sum,index_list
+def driver_code(theta):
+    combinations, dic = combinations_emf(theta)
+    outputList = []
+    for comb in combinations:
+        coils = phasor_finder(comb, theta, dic)
+        outputList.append(resultant_phasor(coils))
+
+        
+    return (sorted(outputList, key = lambda x: x[2]))[:5]
