@@ -98,7 +98,7 @@ def driver_code(theta):
     for comb in combinations:
         coils = phasor_finder(comb, theta, dic)
         outputList.append(resultant_phasor(coils))
-        magnitude.append(resultant_phasor(coils)[2])
+        magnitude.append(round(resultant_phasor(coils)[2]),3)
     #print(magnitude)
     dic = {'Magnitude': magnitude,'Coil Connection':combinations}
     #print(dic)
