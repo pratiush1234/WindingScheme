@@ -111,8 +111,8 @@ if option == 'Double Layer Winding':
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-10, 10])
-                    ax.set_ylim([-10, 10])
+                    ax.set_xlim([-8, 8])
+                    ax.set_ylim([-8, 8])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -201,8 +201,8 @@ elif(option == 'Single Layer Winding'):
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-10, 10])
-                    ax.set_ylim([-10, 10])
+                    ax.set_xlim([-8, 8])
+                    ax.set_ylim([-8, 8])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
