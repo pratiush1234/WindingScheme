@@ -1,6 +1,7 @@
 import math
 import cmath
 import itertools
+import pandas as pd
 
 def create_comb(s,dic,f):
     ln = len(dic[f])
@@ -93,9 +94,15 @@ def resultant_phasor(coils):
 def driver_code(theta):
     combinations, dic = combinations_emf(theta)
     outputList = []
+    magnitude = []
     for comb in combinations:
         coils = phasor_finder(comb, theta, dic)
         outputList.append(resultant_phasor(coils))
-
-        
-    return (sorted(outputList, key = lambda x: x[2]))[:5]
+        magnitude.append(resultant_phasor(coils)[2])
+    #print(magnitude)
+    dic = {'Magnitude': magnitude,'Coil Connection':combinations}
+    #print(dic)
+    outputDataframe = pd.DataFrame(dic)
+    resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
+    resultant_dataframe.reset_index(drop = True,inplace = True)    
+    return sorted(outputList, key = lambda x:x[2])[-9:], resultant_dataframe.head(10)
