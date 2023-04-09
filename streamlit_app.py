@@ -4,6 +4,7 @@ import math
 import helper
 import emf_polygon
 import matplotlib.pyplot as plt
+import pandas as pd
 
 number_of_phases = 3
 st.set_page_config(page_title="Winding Scheme")
@@ -79,7 +80,10 @@ if option == 'Double Layer Winding':
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
 
-                phasor_list = emf_polygon.driver_code(theta_angle)
+                phasor_list,outputDataframe = emf_polygon.driver_code(theta_angle)
+                
+                st.table(outputDataframe)
+                st.write(("-----[connected in Parallel]---connected in Series---[connected in Parallel]-----",))
                 for unique_phasor in phasor_list:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
@@ -166,7 +170,9 @@ elif(option == 'Single Layer Winding'):
                 st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
-                phasor_list = emf_polygon.driver_code(theta_angle)
+                phasor_list,outputDataframe = emf_polygon.driver_code(theta_angle)
+                st.table(outputDataframe)
+                st.write(("-----[connected in Parallel]---connected in Series---[connected in Parallel]-----",))
 
                 for unique_phasor in phasor_list:
                     phasors = unique_phasor[0]
