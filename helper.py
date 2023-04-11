@@ -251,23 +251,10 @@ def single_layer_checkPossiblity(number_of_slots,number_of_poles):
 
 
 def single_layer_func(number_of_slots,number_of_poles):
-    number_of_phases = 3
-    number_of_slots = int(number_of_slots)
+# define total number of coils 
     number_of_poles = int(number_of_poles)
-
-    # Function to find gcd of two numbers
-    def gcd(a, b):
-        # Everything divides 0
-        while(a > 0 and b > 0):
-            if (a > b):
-                a = a % b
-            else:
-                b = b % a 
-        if (a == 0):
-            return b
-        return a
-    
-    # define total number of coils 
+    number_of_slots = int(number_of_slots)
+    number_of_phases = 3
     number_of_coils = number_of_slots/2
 
     # coils per pole
@@ -278,9 +265,9 @@ def single_layer_func(number_of_slots,number_of_poles):
 
     # define coil span
     coil_span = number_of_slots//number_of_poles
-    
+
     # define motor periodicity or number of rotation
-    motor_periodicity = gcd(number_of_slots,number_of_poles//2)
+    motor_periodicity = math.gcd(number_of_slots,number_of_poles//2)
 
     # define phase group
     phase_group = number_of_slots/(4*number_of_phases)
@@ -289,38 +276,39 @@ def single_layer_func(number_of_slots,number_of_poles):
     number_of_spokes = number_of_slots/motor_periodicity
 
     coil_number = [i for i in range(1,(number_of_slots+2)//2)]
+    #print('coil_number: ',coil_number)
     # define coil pitch
     coil_pitch_mech = 360/number_of_coils
+    #print('coi_pitch_mech: ',coil_pitch_mech)
     coil_pitch_elec = (number_of_poles/2)*coil_pitch_mech
-    # define slot angles 
-    theta = [n*coil_pitch_elec for n in range(int(number_of_coils))]
+    #print('coi_pitch_elec: ',coil_pitch_elec)
+    coil_angle_mech = [n*coil_pitch_mech for n in range(len(coil_number))]
+    #print('coil_angle_mech: ',coil_angle_mech)
+    coil_angle_elec = [n*coil_pitch_elec for n in range(len(coil_number))]
+#print('coil_angle_elec: ',coil_angle_elec)
     # define slot in and out lists
-    slotin = [0]*int(number_of_coils)
-    slotout = [0]*int(number_of_coils)
-    num = 0
-    iter_ = 0
-    for i in range(motor_periodicity):
-        for j in range(int(number_of_coils)//motor_periodicity):
-            slotin[iter_] = num + 1
-            num = num+1
-            iter_ = iter_+1
-        num = num + int(number_of_coils)//motor_periodicity    
-    slotout = [slotin[i]+int(number_of_coils)//motor_periodicity for i in range(len(slotin))]
-    # Fill slotin and slotout lists
-    for i in range(0, int(number_of_coils)):
-        if slotin[i] > int(number_of_coils):
-            slotin[i] -= int(number_of_coils)
-
-    for i in range(0, int(number_of_coils)):
-        if slotout[i] > int(number_of_coils):
-            slotout[i] -= int(number_of_coils)
+    var1 =0
+    var2 = 1
+    slotin=[]
+    slotout=[]
+    for i in range(1,motor_periodicity+1):
+        var3 = var1 +1
+        for j in range(1,int(number_of_spokes//2)+1):
+            var1 = var3 + coil_span
+            slotin.append(var3) 
+            slotout.append(var1)
+            var3 +=1
+            var2 +=1
+    theta = coil_angle_elec
     # convert slot angle between -180 to +180 degrees        
     for i in range(0,int(number_of_coils)):
         theta[i] = ((theta[i]+180)%360)-180
-
+        
     # round-off theta to nearest integer
     for i in range(len(theta)):
         theta[i] = math.ceil(theta[i])
+
+
 
     # initialize a list for storing relative slot angle for phase A     
     theta1 = []
@@ -358,21 +346,14 @@ def single_layer_func(number_of_slots,number_of_poles):
 
     # fill winding scheme for other phases
     for i in range(len(slotin1)):
-        slotin2[i]=slotin1[i]+coil_span
-        if slotin2[i]>int(number_of_coils):
-            slotin2[i]  -= int(number_of_coils)
+        
+        slotin2[i]=slotin1[i]+1
             
-        slotout2[i]=slotout1[i]+coil_span
-        if slotout2[i]>int(number_of_coils):
-            slotout2[i]  -= int(number_of_coils)
+        slotout2[i]=slotout1[i]+1
             
-        slotin3[i]=slotin1[i]+ 2*coil_span
-        if slotin3[i]>int(number_of_coils):
-            slotin3[i]  -= int(number_of_coils)
+        slotin3[i]=slotin1[i]+ 2
             
-        slotout3[i]=slotout1[i]+ 2*coil_span
-        if slotout3[i]>int(number_of_coils):
-            slotout3[i]  -= int(number_of_coils)
+        slotout3[i]=slotout1[i]+ 2
             
             
     # function to convert a value to its nearest integer        
@@ -386,6 +367,9 @@ def single_layer_func(number_of_slots,number_of_poles):
     slotout2=mapp(slotout2)
     slotin3=mapp(slotin3)
     slotout3=mapp(slotout3)
+
+
+
 
     return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta1
 
