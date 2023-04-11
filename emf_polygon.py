@@ -275,6 +275,9 @@ def driver_code_2(theta):
     out_coil = []
     end = []
     magnitude = []
+    comb = []
+    for ele in combination:
+        comb.append(str(ele))
     
     combination, dic = combinations_emf2(theta)
     #print(combination)
@@ -284,8 +287,8 @@ def driver_code_2(theta):
         #print(phasor)
         out_coil.append(out_phasor2(coils))
         magnitude.append(phasor[-1])
-    #dic = {'Magnitude':magnitude, 'Coil Connection':combination}
-    #outputDataframe = pd.DataFrame(dic)
-    #resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
-    #resultant_dataframe.reset_index(drop = True,inplace = True)
-    return sorted(out_coil, key = lambda x:x[2])[-4:]#, resultant_dataframe.head(5)
+    dic = {'Magnitude':magnitude, 'Coil Connection':comb}
+    outputDataframe = pd.DataFrame(dic)
+    resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
+    resultant_dataframe.reset_index(drop = True,inplace = True)
+    return sorted(out_coil, key = lambda x:x[2])[-4:], resultant_dataframe
