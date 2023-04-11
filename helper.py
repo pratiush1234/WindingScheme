@@ -337,7 +337,13 @@ def single_layer_func(number_of_slots,number_of_poles):
                         slotout1.append(slotout[j])
                         set1[j]=True
 
-
+    factor = 0
+    for i in range(len(slotin):
+        if slotin[i] == slotin1[i]:
+            pass
+        else:
+            factor = i+1
+            break
     # make four lists for other two phases also.                   
     slotin2=[0]*len(slotin1)
     slotin3=[0]*len(slotin1)
@@ -347,13 +353,13 @@ def single_layer_func(number_of_slots,number_of_poles):
     # fill winding scheme for other phases
     for i in range(len(slotin1)):
         
-        slotin2[i]=slotin1[i]+1
+        slotin2[i]=slotin1[i]+factor
             
-        slotout2[i]=slotout1[i]+1
+        slotout2[i]=slotout1[i]+factor
             
-        slotin3[i]=slotin1[i]+ 2
+        slotin3[i]=slotin1[i]+ factor*2
             
-        slotout3[i]=slotout1[i]+ 2
+        slotout3[i]=slotout1[i]+ factor*2
             
             
     # function to convert a value to its nearest integer        
