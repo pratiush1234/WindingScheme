@@ -276,11 +276,12 @@ def driver_code_2(theta):
     end = []
     magnitude = []
     comb = []
-    for ele in combination:
-        comb.append(str(ele))
+ 
     
     combination, dic = combinations_emf2(theta)
     #print(combination)
+    for ele in combination:
+        comb.append(str(ele))
     for ele in combination:
         coils = connection_diagram(ele,dic)
         phasor = out_phasor2(coils)
