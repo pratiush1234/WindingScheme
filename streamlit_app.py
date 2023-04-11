@@ -121,9 +121,9 @@ if option == 'Double Layer Winding':
                     st.write('EMF Magnitude:', magnitude, 'pu')
 ###################################################################################################################################################
                 st.markdown('*Second Case*')
-                phasor_list_2 = emf_polygon.driver_code_2(theta_angle)
+                phasor_list_2,outputDataframe_2  = emf_polygon.driver_code_2(theta_angle)
                 #st.write(phasor_list_2)
-                #st.table(outputDataframe_2)
+                st.table(outputDataframe_2)
                 st.write(("-----[connected in Parallel]---connected in Series---[connected in Parallel]-----",))
                 for unique_phasor in phasor_list_2:
                     phasors = unique_phasor[0]
@@ -252,8 +252,9 @@ elif(option == 'Single Layer Winding'):
                     #st.write("Magnitude: ", magnitude," pu")
                     st.write('EMF Magnitude:', magnitude, 'pu')
 ###########################################################################################################################################################
-                phasor_list_2 = emf_polygon.driver_code_2(theta_angle)
-                #st.table(outputDataframe_2)
+                phasor_list_2,outputDataframe_2 = emf_polygon.driver_code_2(theta_angle)
+                st.markdown('Second Case')
+                st.table(outputDataframe_2)
                 #st.write(("-----[connected in Parallel]---connected in Series---[connected in Parallel]-----",))
                 st.markdown('Second Case')
                 for unique_phasor in phasor_list_2:
