@@ -338,7 +338,7 @@ def single_layer_func(number_of_slots,number_of_poles):
                         set1[j]=True
 
     factor = 0
-    for i in range(len(slotin):
+    for i in range(len(slotin)):
         if slotin[i] == slotin1[i]:
             pass
         else:
