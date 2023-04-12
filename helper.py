@@ -296,7 +296,10 @@ def single_layer_func(number_of_slots,number_of_poles):
             iter_ += 1
         list1.append(temp)        
     #print(list1)
-
+    
+    factor1 = number_of_slots/(2*number_of_phases)
+    factor2 = factor1/len(list1)
+    
     slotin1 = []
     slotin2 = []
     slotin3 = []
