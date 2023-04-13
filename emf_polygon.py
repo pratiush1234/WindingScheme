@@ -93,6 +93,7 @@ def resultant_phasor1(coils):
 
 def driver_code_1(theta):
     combinations, dic = combinations_emf1(theta)
+    combb = []
     outputList = []
     magnitude = []
     for comb in combinations:
@@ -100,7 +101,9 @@ def driver_code_1(theta):
         outputList.append(resultant_phasor1(coils))
         magnitude.append(round(resultant_phasor1(coils)[2],3))
     #print(magnitude)
-    dic = {'Magnitude': magnitude,'Coil Connection':combinations}
+    for comb in combinations:
+        combb.append(str(comb))
+    dic = {'Magnitude': magnitude,'Coil Connection':combb}
     #print(dic)
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
