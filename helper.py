@@ -1,326 +1,437 @@
-
- 
-
 import math
-import cmath
-import itertools
-import pandas as pd
-#test
-def create_comb1(s,dic,f):
-    ln = len(dic[f])
-    s_filtered = [t for t in s if len(t) <= ln]
 
-    t = []
-    combinations = []
-    for i in range(1, ln+1):
-        for comb in itertools.combinations(s_filtered, i):
-            l = []
-            for m in comb:
-                for d in m:
-                    l.append(d)
-            l = set(l)
-            e = list(len(t) for t in comb)
-            if sum(len(t) for t in comb) == ln and len(l)==ln and e not in t:
-                combinations.append(list(comb))
-                t.append(e)
-    return combinations
+#####################################################DOUBLE LAYER###########################################################################
+def double_layer_checkPossiblity(number_of_phases,number_of_slots,number_of_poles):
+    number_of_phases = 3
+    number_of_slots = int(number_of_slots)
+    number_of_poles = int(number_of_poles)
+    flag = 0
 
-def generate_combinations1(numbers):
-    # Generate all possible values for each element
-    values = [range(n) for n in numbers]
-    
-    # Use itertools.product to generate all combinations
-    combinations = itertools.product(*values)
-    return list(combinations)
+    # Step 2: Calculate internal parameters
+    slot_pitch_mech = 360 / number_of_slots
+    number_of_slots_per_pole_per_phase = number_of_slots/(number_of_poles*number_of_phases)
 
-def combinations_emf1(theta):      
-    coil_number = [i for i in range(1,len(theta)+1)]
-    dic = {}
+    for q in range(1,1000):
+        coil_offset= (2 / 3) * (number_of_slots/number_of_poles) * (1+3*q)
+        if coil_offset.is_integer():
+            break
+
+    # Step 3
+    if number_of_phases%3 != 0 or number_of_slots % 3 != 0 or number_of_slots_per_pole_per_phase >2 or coil_offset.is_integer()==False:
+        #print("Double layer winding is not feasible for the given number of poles and slots combination.")
+        flag = 1
+    return round(coil_offset,3), flag, round(number_of_slots_per_pole_per_phase,3)
+
+def double_layer_func(number_of_phases,number_of_slots,number_of_poles):
+    number_of_phases=int(number_of_phases)
+    number_of_slots=int(number_of_slots)
+    number_of_poles=int(number_of_poles)
+
+
+    # Step 2: Calculate internal parameters
+    slot_pitch_mech = 360 / number_of_slots
+    number_of_slots_per_pole_per_phase = number_of_slots/(number_of_poles*number_of_phases)
+
+    # Step 12: Calculate coil offset
+    for q in range(1,1000):
+        coil_offset= (2 / 3) * (number_of_slots/number_of_poles) * (1+3*q)
+        if coil_offset.is_integer():
+            break
+
+    # # Step 3
+    # if number_of_phases%3 != 0 or number_of_slots % 3 != 0 or number_of_slots_per_pole_per_phase >2 or coil_offset.is_integer()==False:
+    #     print("Double layer winding is not feasible for the given number of poles and slots combination.")
+    #     return 0
+    # moved to a particular function
+
+    # Step 4: Define variables
+    slot_pitch_mech = 360 / number_of_slots
+    slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
+    coil_span = int(number_of_slots / number_of_poles)
+    coil_pitch = coil_span * slot_pitch_elec
+    chording_angle = (180 - slot_pitch_elec) / 2
+    number_of_coils = number_of_slots*2
+
+
+    # Step 10: Define lists
+    slotin = [0] * number_of_slots
+    slotout = [0] * number_of_slots
+    theta = [0] * number_of_slots
+
+    for i in range(0,number_of_slots):
+        theta[i] = (i) * (number_of_poles/number_of_slots)*180
+
+    # Step 18: Fill slotin and slotout lists
+    for i in range(0, number_of_slots):
+        slotin[i] = i + 1
+
+    for i in range(0, number_of_slots):
+        slotout[i] = i + 1 + coil_span
+        if slotout[i] > number_of_slots:
+            slotout[i] -= number_of_slots
+
+
+    for i in range(0,number_of_slots):
+        theta[i] = ((theta[i]+180)%360)-180
 
     for i in range(len(theta)):
-        if theta[i] not in dic:
-            dic[theta[i]] = []
-        dic[theta[i]].append(coil_number[i])
-    new = {}
-    for s in dic.keys():
-        new[s] = []
-        num = dic[s]
-        for i in range(1,len(num)+1):
-            new[s] = new[s] + list(itertools.combinations(num, i))
-    final = {}
-    for s in dic.keys():
-        final[s] = create_comb1(new[s],dic,s)
-    ch_fin = list(final.values())
-    numbers = [len(final[j]) for j in dic]
-    combinations = generate_combinations1(numbers)
-    end = []
+        theta[i] = math.ceil(theta[i])
 
-    for o in combinations:
-        li = []
-        for i in range(len(o)):
-            for a in ch_fin[i][o[i]]:
-                li.append(a)
-        end.append(li)
-    return end,dic
+    # Step 23: Check theta and swap slots if necessary
+    for i in range(0, number_of_slots):
+        if theta[i] >= 90 or theta[i]<-90:
+            slotin[i],slotout[i] = slotout[i],slotin[i]
+
+    ## Step 25
+    for i in range(0,number_of_slots):
+        if theta[i]>90:
+            theta[i] = theta[i]-180
+        elif theta[i]<-90:
+            theta[i] = theta[i]+180
+        elif theta[i] == 90 or theta[i] == -90:
+            theta[i] = theta[i]
+
+    theta1 = []
+    for i in range(0,number_of_slots):
+        if theta[i] >= 0:
+            theta1.append(theta[i])
+    theta1.sort()
+
+    # Final step to select the phases.
+    slotin1 = []
+    slotout1 = []
+    set1=  [False] * number_of_slots
+    for i in range(len(theta1)):
+
+        for j in range(number_of_slots):
+            if(len(slotin1)== number_of_slots//3):
+                break
+            else:
+                if theta[j]== theta1[i]:
+                    if set1[j] ==False:
+                        slotin1.append(slotin[j])
+                        slotout1.append(slotout[j])
+                        set1[j]=True
+
+    slotin2=[0]*len(slotin1)
+    slotin3=[0]*len(slotin1)
+    slotout2=[0]*len(slotin1)
+    slotout3=[0]*len(slotin1)
+    for i in range(len(slotin1)):
+        slotin2[i]=slotin1[i]+coil_offset
+        if slotin2[i]>number_of_slots:
+            slotin2[i]  -= number_of_slots
+
+        slotout2[i]=slotout1[i]+coil_offset
+        if slotout2[i]>number_of_slots:
+            slotout2[i]  -= number_of_slots
+
+        slotin3[i]=slotin1[i]+ 2*coil_offset
+        if slotin3[i]>number_of_slots:
+            slotin3[i]  -= number_of_slots
+
+        slotout3[i]=slotout1[i]+ 2*coil_offset
+        if slotout3[i]>number_of_slots:
+            slotout3[i]  -= number_of_slots
+
+    def mapp(arr):
+        for i in range(len(arr)):
+            arr[i] = math.ceil(arr[i])
+        return arr
+
+    slotin2=mapp(slotin2)
+    slotout2=mapp(slotout2)
+    slotin3=mapp(slotin3)
+    slotout3=mapp(slotout3)
+    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta1
+
+def double_layer_checkForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles):
+    number_of_phases=int(number_of_phases)
+    number_of_slots=int(number_of_slots)
+    number_of_poles=int(number_of_poles)
+    flag = 0
+    slot_pitch_mech = 360 / number_of_slots
+    coil_pitch = number_of_slots // number_of_poles
+    slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
+    coil_pitch_elec = coil_pitch * slot_pitch_elec
+    coil_pitch_mech = coil_pitch * slot_pitch_mech
+    coil_span_in_slot_pitch = int(number_of_slots/number_of_poles)
+
+    if coil_pitch_elec == 180:
+        flag = 1
+        #return "Winding is Full Pitched"
+    else:
+        flag = 0
+        #return "Winding is Short Pitched"
+    return flag,round(slot_pitch_mech,3),round(slot_pitch_elec,3),round(coil_pitch_mech,3),round(coil_pitch_elec,3),round(coil_span_in_slot_pitch,3)
+
+def double_layer_misc_parameter(number_of_slots,number_of_poles):
+    number_of_slots = int(number_of_slots)
+    number_of_poles = int(number_of_poles)
+    # Step 4: Define variables
+    slot_pitch_mech = 360 / number_of_slots
+    slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
+    coil_span = int(number_of_slots / number_of_poles)
+    coil_pitch = coil_span * slot_pitch_elec
+    # calculation for pitch factor // give angles in radians 
     
-def returnKey(dic,ele):
-    for key, value in dic.items():
-        if ele in value:
-            return key
+    chording_angle = (180 - coil_pitch) / 2
+    number_of_coils = number_of_slots*2
+
+    pitch_factor = math.cos((math.pi/180)*chording_angle/2)
+   
+    # angular displacement between slots
+    beta = (180*number_of_poles)/number_of_slots
+    number_of_slots_per_pole_per_phase = number_of_slots/(number_of_poles*3)
+    # calculation of distribution factor
+    distribution_factor = math.sin((math.pi/180)*number_of_slots_per_pole_per_phase*beta*0.5)/(number_of_slots_per_pole_per_phase*math.sin((math.pi/180)*(beta/2)))
+
+    # calculation of winding factor
+    winding_factor = pitch_factor*distribution_factor
+    
+    # angular displacement between slots
+    beta = (180*number_of_poles)/number_of_slots
+    return round(pitch_factor,3), round(distribution_factor,3), round(pitch_factor*distribution_factor,3)
+##############################################################################################################################
+
+################################################# SINGLE LAYER ###############################################################
+
+def single_layer_checkPossiblity(number_of_slots,number_of_poles):
+    number_of_slots = int(number_of_slots)
+    number_of_poles = int(number_of_poles)
+    flag = 0
+    import math
+    gcd1 =  math.gcd(number_of_slots, number_of_poles)
+    factor = number_of_slots/(3*gcd1)
+    
+    
+    def gcd(a, b):
+        # Everything divides 0
+        while(a > 0 and b > 0):
+            if (a > b):
+                a = a % b
+            else:
+                b = b % a 
+        if (a == 0):
+            return b
+        return a
+    
+    # define total number of coils 
+    number_of_coils = float(number_of_slots/2)
+
+    # coils per pole
+    coils_per_pole = float(number_of_slots/(2*number_of_poles))
+
+    # coils per phase
+    coils_per_phase = float(number_of_slots/(2*3))
+    
+    
+    motor_periodicity = float(gcd(number_of_slots,number_of_poles//2))
+    
+    number_of_spokes = float(number_of_slots/motor_periodicity)
+    
+    if number_of_poles%2 != 0 or factor.is_integer()== False or number_of_slots % 3 != 0 or number_of_coils.is_integer()==False or coils_per_phase.is_integer()==False or number_of_spokes.is_integer()==False or motor_periodicity.is_integer() == False:
+        flag = 1
+    return flag
+
+
+#      number_of_slots = int(number_of_slots)
+#      number_of_poles = int(number_of_poles)
+#     if slots % poles != 0:
+#         # The number of slots must be a multiple of the number of poles
+#         return False
+#     if poles % 2 == 0 and slots % 2 == 0:
+#         # If both poles and slots are even, a single layer winding is not possible
+#         return False
+#     if poles % 2 == 1 and slots % 2 == 1:
+#         # If both poles and slots are odd, a single layer winding is not possible
+#         return False
+#     return True
+
+  
+def single_layer_func(number_of_slots,number_of_poles):
+    def mapp(arr):
+        for i in range(len(arr)):
+            arr[i] = math.ceil(arr[i])
+        return arr
+    number_of_poles = int(number_of_poles)
+    number_of_slots = int(number_of_slots)
+    number_of_phases = 3    
+
+# define total number of coils 
+    number_of_coils = number_of_slots/2
+
+    # coils per pole
+    coils_per_pole = number_of_slots/(2*number_of_poles)
+
+    # coils per phase
+    coils_per_phase = number_of_slots/(2*3)
+
+    # define coil span
+    coil_span = number_of_slots//number_of_poles
+
+    # define motor periodicity or number of rotation
+    motor_periodicity = math.gcd(number_of_slots,number_of_poles//2)
+
+    # define phase group
+    phase_group = number_of_slots/(4*number_of_phases)
+
+    # define number of spokes
+    number_of_spokes = number_of_slots/motor_periodicity
+
+    coil_number = [i for i in range(1,(number_of_slots+2)//2)]
+    #print('coil_number: ',coil_number)
+    # define coil pitch
+    coil_pitch_mech = 360/number_of_coils
+    #print('coi_pitch_mech: ',coil_pitch_mech)
+    coil_pitch_elec = (number_of_poles/2)*coil_pitch_mech
+    #print('coi_pitch_elec: ',coil_pitch_elec)
+    coil_angle_mech = [n*coil_pitch_mech for n in range(len(coil_number))]
+    #print('coil_angle_mech: ',coil_angle_mech)
+    coil_angle_elec = [n*coil_pitch_elec for n in range(len(coil_number))]
+    #print('coil_angle_elec: ',coil_angle_elec)
+
+
+    list1 = []
+    iter_ = 1
+    for i in range(int(number_of_slots/number_of_spokes)):
+        temp = []
+        for j in range(int(number_of_spokes)):
+            temp.append(iter_)      
+            iter_ += 1
+        list1.append(temp)     
+
+    arr = []
+    for ele in list1:
+        arr.append(ele[:len(ele)//2])
+        arr.append(ele[len(ele)//2:])
+
+# Now again assign arr to the list1 which is in the required form.
+    list1 = arr
+
+    theta = coil_angle_elec
+
+
+    # convert slot angle between -180 to +180 degrees        
+    for i in range(0,int(number_of_coils)):
+        theta[i] = ((theta[i]+180)%360)-180
+
+    # round-off theta to nearest integer
+    for i in range(len(theta)):
+        theta[i] = math.ceil(theta[i]) 
+
+    # define slotin and slotout
+    slotin = [x for i in range(len(list1)) for x in list1[i] if i%2==0]
+    slotout = [x for i in range(len(list1)) for x in list1[i] if i%2==1]
         
-def phasor_finder1(comb, theta, dic):
-    coils = []
-    ## Handling parallel cases
-    for combination in comb:
-        key = returnKey(dic,combination[0])
-        temp = [1,key]
-        coils.append(temp)
-        temp= []
-    return coils
-
-def resultant_phasor1(coils):
-    phasor_sum = 0
-    phasors = []
-    for pair in coils:
-        #print(pair)
-        magnitude = pair[0]
-        angle = pair[1]
-        #print(angle)
-        phasor = cmath.rect(magnitude, math.radians(angle))
-        phasors.append(phasor)
-    phasor_sum = sum(phasors)
-
-    magnitude = abs(phasor_sum)
-    #angle = cmath.phase(phasor_sum)
-    return [phasors, phasor_sum, round(magnitude,3)]
-
-def driver_code_1(theta):
-    combinations, dic = combinations_emf1(theta)
-    combi = []
-    outputList = []
-    magnitude = []
-    for comb in combinations:
-        coils = phasor_finder1(comb, theta, dic)
-        outputList.append(resultant_phasor1(coils))
-        magnitude.append(round(resultant_phasor1(coils)[2],3))
-    #print(magnitude)
-    for comb in combinations:  
-#         combb.append(str(comb))
-        combb = str(comb).replace(',), (', ')--(').replace('), (', ')--(').replace(',)',')')
-
-        # Replacing ',' with '||' using replace() method
-        combb = combb.replace(', ', '||')
-        combi.append(combb)
-        
-    dic = {'Magnitude': magnitude,'Coil Connection':combi}
-    #print(dic)
-    outputDataframe = pd.DataFrame(dic)
-    resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
-    resultant_dataframe.reset_index(drop = True,inplace = True)    
-    return sorted(outputList, key = lambda x:x[2])[-4:], resultant_dataframe.head(5)
+    # initialize a list for storing relative slot angle for phase A     
+    thetai = [x+360 if x<0 else x for x in theta ]
 
 
+    # # take out positive slot angles
+    # for i in range(0,int(number_of_coils)):
+    #     if theta[i] >= 0:
+    #         theta1.append(theta[i])   
 
-from itertools import combinations
-def create_comb2(s,dic,f):
-    ln = len(dic[f])
-    s_filtered = [t for t in s if len(t) <= ln]
-    t = []
-    combinations = []
-    for i in range(1, ln+1):
-        for comb in itertools.combinations(s_filtered, i):
-            l = []
-            for m in comb:
-                for d in m:
-                    l.append(d)
-            l = set(l)
-            e = list(len(t) for t in comb)
-            if sum(len(t) for t in comb) == ln and len(l)==ln and e not in t:
-                combinations.append(list(comb))
-                t.append(e)
-    return combinations
+    # Now sort the positive relative slot angles
+    theta1 = sorted(thetai)  
+    # Final step to select the phases.
+    slotin1 = []
+    slotout1 = []
+    set1=  [False] * int(number_of_coils)
+    for i in range(len(theta1)):
 
-def generate_combinations2(numbers):
-    # Generate all possible values for each element
-    values = [range(n) for n in numbers]    
-    # Use itertools.product to generate all combinations
-    combinations = itertools.product(*values)    
-    return list(combinations)
+        for j in range(int(number_of_coils)):
+            if(len(slotin1)== int(number_of_coils)//3):
+                break
+            else:
+                if thetai[j]== theta1[i]:
+                    if set1[j] ==False:
+                        slotin1.append(slotin[j])
+                        slotout1.append(slotout[j])
+                        set1[j]=True    
+                        
+    slotin2 = []
+    slotout2 = []
 
+    for i in range(len(theta1)):
 
-def combinations_emf2(theta):              
-        coil_number = [i for i in range(1,len(theta)+1)]
-#        print('coil_number : ', coil_number)
-        dic = {}
-        for i in range(len(theta)):
-            if theta[i] not in dic:
-                dic[theta[i]] = []
-            dic[theta[i]].append(coil_number[i])
-#        print('dic : ',dic)
-        new = {}
-        for s in dic.keys():
-            new[s] = []
-            num = dic[s]
-            for i in range(1,len(num)+1):
+        for j in range(int(number_of_coils)):
+            if(len(slotin2)== int(number_of_coils)//3):
+                break
+            else:
+                if thetai[j]== theta1[i]:
+                    if set1[j] ==False:
+                        slotin2.append(slotin[j])
+                        slotout2.append(slotout[j])
+                        set1[j]=True
+        # Final step to select the phases.
+    slotin3 = []
+    slotout3 = []
 
-                new[s] = new[s] + list(itertools.combinations(num, i))
-#        print('new : ',new)
-        final = {}
-        for s in dic.keys():
-            final[s] = create_comb2(new[s],dic,s)
+    for i in range(len(theta1)):
 
-        ch_fin = list(final.values())
-#        print('ch_fin : ',ch_fin)
-        numbers = [len(final[j]) for j in dic]
-        combinatins = generate_combinations2(numbers)
-        end = [] 
-        for o in combinatins:
-            li = []
-            for i in range(len(o)):
-                for a in ch_fin[i][o[i]]:
-                    if len(a) == 1:
-                        li.append(a[0])
-                    else:
-                        li.append(a)
-            end.append(li)
-            connections = li
-            oo = len(theta)            
-            for j in range(2,oo+1):
-                parallel_indices = [i for i, connection in enumerate(connections) if isinstance(connection,tuple) and len(connection)==j]
-                if len(parallel_indices)>=2:
-                    t = []
-#                 print(parallel_indices)
-                    all_combinations = []
-                    for i in range(2, len(parallel_indices) + 1):
-                        combinations_i = list(combinations(parallel_indices, i))
-                        all_combinations.extend(combinations_i)                    
-                    for m in all_combinations:
-                        al = []
-                        for b in range(len(connections)):
-#                 print(combinations_i)
-                            if b not in m:
-                                al.append(connections[b])
-                        l = tuple()
-                        for n in range(j):
-                            r = []
-                            for e in m:
-                                r.append(connections[e][n])
-                            l = l + (r,)
-                        al.append(l)                        
-                        t.append(al)
-                    end.extend(t)
-        return end, dic
+        for j in range(int(number_of_coils)):
+            if(len(slotin3)== int(number_of_coils)//3):
+                break
+            else:
+                if thetai[j]== theta1[i]:
+                    if set1[j] ==False:
+                        slotin3.append(slotin[j])
+                        slotout3.append(slotout[j])
+                        set1[j]=True
+    theta2 = theta
+    # Call the above functions on desierd lists        
+    slotin2=mapp(slotin2)
+    slotout2=mapp(slotout2)
+    slotin3=mapp(slotin3)
+    slotout3=mapp(slotout3)
+    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta2
+
+def single_layer_misc_parameter(number_of_slots,number_of_poles):
+    number_of_slots = int(number_of_slots)
+    number_of_poles = int(number_of_poles)
+    # Step 4: Define variables
+    slot_pitch_mech = 360 / number_of_slots
+    slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
+    coil_span = int(number_of_slots / number_of_poles)
+    coil_pitch = coil_span * slot_pitch_elec
+    # calculation for pitch factor // give angles in radians 
+    chording_angle = (180 - coil_pitch) / 2
+    number_of_coils = number_of_slots*2
+
+    pitch_factor = math.cos((math.pi/180)*chording_angle/2)
+   
+    # angular displacement between slots
+    beta = (180*number_of_poles)/number_of_slots
+    number_of_slots_per_pole_per_phase = number_of_slots/(number_of_poles*3)
+    # calculation of distribution factor
+    distribution_factor = math.sin((math.pi/180)*number_of_slots_per_pole_per_phase*beta*0.5)/(number_of_slots_per_pole_per_phase*math.sin((math.pi/180)*(beta/2)))
+
+    # calculation of winding factor
+    winding_factor = pitch_factor*distribution_factor
     
-    
-def returnKey2(dic,ele):
-    for key, value in dic.items():
-        if ele in value:
-            return key
-        
-def phasor_finder2(comb, theta, dic):
-    coils = []
-    ## Handling parallel cases
-    for combination in comb:
-        key = returnKey2(dic,combination[0])
-        temp = [1,key]
-        coils.append(temp)
-        temp= []
-    return coils
+    # angular displacement between slots
+    beta = (180*number_of_poles)/number_of_slots
+    return round(pitch_factor,3), round(distribution_factor,3), round(pitch_factor*distribution_factor,3)
 
-def resultant_phasor2(coils):
-    phasor_sum = 0
-    phasors = []
-    for pair in coils:
-        #print(pair)
-        magnitude = pair[0]
-        angle = pair[1]
-        #print(angle)
-        phasor = cmath.rect(magnitude, math.radians(angle))
-        phasors.append(phasor)
-    phasor_sum = sum(phasors)
-    magnitude = abs(phasor_sum)
-    angle = cmath.phase(phasor_sum)
-    return [round(magnitude,3), math.degrees(angle)]
 
-def out_phasor2(coils):
-    phasor_sum = 0
-    phasors = []
-    for pair in coils:
-        #print(pair)
-        magnitude = pair[0]
-        angle = pair[1]
-        #print(angle)
-        phasor = cmath.rect(magnitude, math.radians(angle))
-        phasors.append(phasor)
-    phasor_sum = sum(phasors)
+def single_layer_checkForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles):
+    number_of_phases=int(number_of_phases)
+    number_of_slots=int(number_of_slots)
+    number_of_poles=int(number_of_poles)
+    flag = 0
+    slot_pitch_mech = 360 / number_of_slots
+    coil_pitch = number_of_slots // number_of_poles
+    slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
+    coil_pitch_elec = coil_pitch * slot_pitch_elec
+    coil_pitch_mech = coil_pitch * slot_pitch_mech
+    coil_span_in_slot_pitch = int(number_of_slots/number_of_poles)
 
-    magnitude = abs(phasor_sum)
-    #angle = cmath.phase(phasor_sum)
-    return [phasors, phasor_sum, round(magnitude,3)]
-
-def connection_diagram(comb,dic):
-    lists_in_tuples = []
-    coils = []
-    sub_coils = []
-    for element in comb:
-        if isinstance(element, tuple):
-            for item in element:
-                if isinstance(item, list):
-                    lists_in_tuples.append(item)
-                else:
-                    #print(element)
-                    key = returnKey2(dic,element[0])
-                    coils.append([1,key])
-                    break
-        else:
-            key = returnKey2(dic,element)
-            temp_coil = [1,key]
-            coils.append(temp_coil)
-    for combination in lists_in_tuples:
-        key = returnKey2(dic,combination[0])
-        sub_coils.append([1,key])
-    temp = resultant_phasor2(sub_coils)
-    coils.append(temp)
-    return coils
-
-def coil_representation(input_str):
-    import re
-    # Replace all commas inside large brackets with '--'
-    input_str = re.sub(r'\[(.*?)\]', lambda x: '[' + x.group(1).replace(',', '--') + ']', input_str)
-    
-    # Replace all commas inside small brackets with '||'
-    input_str = re.sub(r'\((.*?)\)', lambda x: '(' + x.group(1).replace(',', '||') + ')', input_str)
-    
-    # Replace all commas between two large brackets with '||'
-    input_str = re.sub(r'\](.*?)\[(.*?)\]', r']||[\2', input_str)
-    
-    # Replace all other commas with '--'
-    input_str = re.sub(r',', '--', input_str)
-    
-    input_str = input_str.replace('[','(').replace(']',')').replace(" ","")#.replace('([','((').replace('])','))')
-    
-    return input_str
-
-def driver_code_2(theta):
-    out_coil = []
-    end = []
-    magnitude = []
-    comb = []
- 
-    
-    combination, dic = combinations_emf2(theta)
-    #print(combination)
-    for ele in combination:
-        ele = coil_representation(str(ele))
-        comb.append(ele)
-    for ele in combination:
-        coils = connection_diagram(ele,dic)
-        phasor = out_phasor2(coils)
-        #print(phasor)
-        out_coil.append(out_phasor2(coils))
-        magnitude.append(phasor[-1])
-    dic = {'Magnitude':magnitude, 'Coil Connection':comb}
-    outputDataframe = pd.DataFrame(dic)
-    resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
-    resultant_dataframe.reset_index(drop = True,inplace = True)
-    return sorted(out_coil, key = lambda x:x[2])[-4:], resultant_dataframe.head(5)
+    if coil_pitch_elec == 180:
+        flag = 1
+        #return "Winding is Full Pitched"
+    else:
+        flag = 0
+        #return "Winding is Short Pitched"
+    return flag,round(slot_pitch_mech,3),round(slot_pitch_elec,3),round(coil_pitch_mech,3),round(coil_pitch_elec,3),round(coil_span_in_slot_pitch,3)
