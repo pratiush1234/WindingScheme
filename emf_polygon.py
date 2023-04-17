@@ -1,3 +1,6 @@
+
+ 
+
 import math
 import cmath
 import itertools
@@ -93,7 +96,7 @@ def resultant_phasor1(coils):
 
 def driver_code_1(theta):
     combinations, dic = combinations_emf1(theta)
-    combb = []
+    combi = []
     outputList = []
     magnitude = []
     for comb in combinations:
@@ -101,9 +104,15 @@ def driver_code_1(theta):
         outputList.append(resultant_phasor1(coils))
         magnitude.append(round(resultant_phasor1(coils)[2],3))
     #print(magnitude)
-    for comb in combinations:
-        combb.append(str(comb))
-    dic = {'Magnitude': magnitude,'Coil Connection':combb}
+    for comb in combinations:  
+#         combb.append(str(comb))
+        combb = str(comb).replace(',), (', ')--(').replace('), (', ')--(').replace(',)',')')
+
+        # Replacing ',' with '||' using replace() method
+        combb = combb.replace(', ', '||')
+        combi.append(combb)
+        
+    dic = {'Magnitude': magnitude,'Coil Connection':combi}
     #print(dic)
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
@@ -274,6 +283,24 @@ def connection_diagram(comb,dic):
     coils.append(temp)
     return coils
 
+def coil_representation(input_str):
+    import re
+    # Replace all commas inside large brackets with '--'
+    input_str = re.sub(r'\[(.*?)\]', lambda x: '[' + x.group(1).replace(',', '--') + ']', input_str)
+    
+    # Replace all commas inside small brackets with '||'
+    input_str = re.sub(r'\((.*?)\)', lambda x: '(' + x.group(1).replace(',', '||') + ')', input_str)
+    
+    # Replace all commas between two large brackets with '||'
+    input_str = re.sub(r'\](.*?)\[(.*?)\]', r']||[\2', input_str)
+    
+    # Replace all other commas with '--'
+    input_str = re.sub(r',', '--', input_str)
+    
+    input_str = input_str.replace('[','(').replace(']',')').replace(" ","")#.replace('([','((').replace('])','))')
+    
+    return input_str
+
 def driver_code_2(theta):
     out_coil = []
     end = []
@@ -284,7 +311,8 @@ def driver_code_2(theta):
     combination, dic = combinations_emf2(theta)
     #print(combination)
     for ele in combination:
-        comb.append(str(ele))
+        ele = coil_representation(str(ele))
+        comb.append(ele)
     for ele in combination:
         coils = connection_diagram(ele,dic)
         phasor = out_phasor2(coils)
