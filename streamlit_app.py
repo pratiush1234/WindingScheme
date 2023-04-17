@@ -115,8 +115,8 @@ if option == 'Double Layer Winding':
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-abs(magnitude)+2, abs(magnitude)+2])
-                    ax.set_ylim([-abs(magnitude)+2, abs(magnitude)+2])
+                    ax.set_xlim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
+                    ax.set_ylim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -161,8 +161,8 @@ if option == 'Double Layer Winding':
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-abs(magnitude)+2, abs(magnitude)+2])
-                    ax.set_ylim([-abs(magnitude)+2, abs(magnitude)+2])
+                    ax.set_xlim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
+                    ax.set_ylim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -254,8 +254,8 @@ elif(option == 'Single Layer Winding'):
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-abs(magnitude)+2, abs(magnitude)+2])
-                    ax.set_ylim([-abs(magnitude)+2, abs(magnitude)+2])
+                    ax.set_xlim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
+                    ax.set_ylim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -298,8 +298,8 @@ elif(option == 'Single Layer Winding'):
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-abs(magnitude)+2, abs(magnitude)+2])
-                    ax.set_ylim([-abs(magnitude)+2, abs(magnitude)+2])
+                    ax.set_xlim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
+                    ax.set_ylim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
