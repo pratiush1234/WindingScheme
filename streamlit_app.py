@@ -83,7 +83,8 @@ if option == 'Double Layer Winding':
                 phasor_list_1,outputDataframe_1 = emf_polygon.driver_code_1(theta_angle)
                 
                 st.table(outputDataframe_1)
-                st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
+                #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
+                max_magn = 0
                 for unique_phasor in phasor_list_1:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
@@ -128,7 +129,8 @@ if option == 'Double Layer Winding':
                 #st.write(phasor_list_2)
                 st.table(outputDataframe_2)
                 
-                st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
+                #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
+                max_magn = 0
                 for unique_phasor in phasor_list_2:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
@@ -221,8 +223,8 @@ elif(option == 'Single Layer Winding'):
 
                 phasor_list_1,outputDataframe_1 = emf_polygon.driver_code_1(theta_angle)
                 st.table(outputDataframe_1)
-                st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
-
+                #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
+                max_magn = 0
                 for unique_phasor in phasor_list_1:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
@@ -264,7 +266,7 @@ elif(option == 'Single Layer Winding'):
                 phasor_list_2,outputDataframe_2 = emf_polygon.driver_code_2(theta_angle)
                 st.markdown('Second Case')
                 st.table(outputDataframe_2)
-                st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
+                #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
                 #st.markdown('Second Case')
                 max_magn = 0
                 for unique_phasor in phasor_list_2:
