@@ -1,6 +1,3 @@
-
- 
-
 import math
 import cmath
 import itertools
@@ -99,10 +96,13 @@ def driver_code_1(theta):
     combi = []
     outputList = []
     magnitude = []
+    max_magn = 0
     for comb in combinations:
         coils = phasor_finder1(comb, theta, dic)
         outputList.append(resultant_phasor1(coils))
         magnitude.append(round((resultant_phasor1(coils)[2])/len(theta),3))
+    for i in magnitude:
+        max_magn = max(max_magn, abs(i))
     #print(magnitude)
     for comb in combinations:  
 #         combb.append(str(comb))
@@ -117,7 +117,7 @@ def driver_code_1(theta):
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
     resultant_dataframe.reset_index(drop = True,inplace = True)    
-    return sorted(outputList, key = lambda x:x[2])[-4:], resultant_dataframe.head(5)
+    return sorted(outputList, key = lambda x:x[2])[-4:], resultant_dataframe.head(5), max_magn
 
 
 
@@ -306,6 +306,7 @@ def driver_code_2(theta):
     end = []
     magnitude = []
     comb = []
+    max_magn = 0
  
     
     combination, dic = combinations_emf2(theta)
@@ -319,8 +320,11 @@ def driver_code_2(theta):
         #print(phasor)
         out_coil.append(out_phasor2(coils))
         magnitude.append(round((phasor[-1])/len(theta),3))
+    for i in magnitude:
+        max_magn = max(max_magn, abs(i))
     dic = {'Magnitude':magnitude, 'Coil Connection':comb}
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
     resultant_dataframe.reset_index(drop = True,inplace = True)
-    return sorted(out_coil, key = lambda x:x[2])[-4:], resultant_dataframe.head(5)
+    return sorted(out_coil, key = lambda x:x[2])[-4:], resultant_dataframe.head(5), max_magn
+    
