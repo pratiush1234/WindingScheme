@@ -80,18 +80,15 @@ if option == 'Double Layer Winding':
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
 
-                phasor_list_1,outputDataframe_1 = emf_polygon.driver_code_1(theta_angle)
+                phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle)
                 
                 st.table(outputDataframe_1)
                 #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
-                max_magn = 0
                 for unique_phasor in phasor_list_1:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
                     phasor_sum = unique_phasor[1]
 
-                    if abs(magnitude) > max_magn:
-                        max_magn = abs(magnitude)
                     #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
                     fig, ax = plt.subplots(figsize=(4, 4))
 
@@ -115,8 +112,8 @@ if option == 'Double Layer Winding':
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
-                    ax.set_ylim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
+                    ax.set_xlim([-1*max_magn+2, max_magn+2])
+                    ax.set_ylim([-1*max_magn+2, max_magn+2])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -125,19 +122,17 @@ if option == 'Double Layer Winding':
                     st.write('EMF Magnitude:', magnitude, 'pu')
 ###################################################################################################################################################
                 #st.markdown('*Second Case*')
-                phasor_list_2,outputDataframe_2  = emf_polygon.driver_code_2(theta_angle)
+                phasor_list_2,outputDataframe_2,max_magn  = emf_polygon.driver_code_2(theta_angle)
                 #st.write(phasor_list_2)
                 st.table(outputDataframe_2)
                 
                 #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
-                max_magn = 0
                 for unique_phasor in phasor_list_2:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
                     phasor_sum = unique_phasor[1]
 
-                    if abs(magnitude) > max_magn:
-                        max_magn = abs(magnitude)
+
                     #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
                     fig, ax = plt.subplots(figsize=(4, 4))
 
@@ -161,8 +156,8 @@ if option == 'Double Layer Winding':
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
-                    ax.set_ylim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
+                    ax.set_xlim([-1*max_magn+2, max_magn+2])
+                    ax.set_ylim([-1*max_magn+2, max_magn+2])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -221,16 +216,15 @@ elif(option == 'Single Layer Winding'):
                 st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
-                phasor_list_1,outputDataframe_1 = emf_polygon.driver_code_1(theta_angle)
+                phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle)
                 st.table(outputDataframe_1)
                 #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
-                max_magn = 0
+                # max_magn = 0
                 for unique_phasor in phasor_list_1:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
                     phasor_sum = unique_phasor[1]
-                    if abs(magnitude) > max_magn:
-                        max_magn = abs(magnitude)
+
                     #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
                     fig, ax = plt.subplots(figsize=(4, 4))
 
@@ -254,8 +248,8 @@ elif(option == 'Single Layer Winding'):
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
-                    ax.set_ylim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
+                    ax.set_xlim([-1*max_magn+2, max_magn+2])
+                    ax.set_ylim([-1*max_magn+2, max_magn+2])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -263,18 +257,16 @@ elif(option == 'Single Layer Winding'):
                     #st.write("Magnitude: ", magnitude," pu")
                     st.write('EMF Magnitude:', magnitude, 'pu')
 ###########################################################################################################################################################
-                phasor_list_2,outputDataframe_2 = emf_polygon.driver_code_2(theta_angle)
+                phasor_list_2,outputDataframe_2,max_magn = emf_polygon.driver_code_2(theta_angle)
                 st.markdown('Second Case')
                 st.table(outputDataframe_2)
                 #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
                 #st.markdown('Second Case')
-                max_magn = 0
+
                 for unique_phasor in phasor_list_2:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
                     phasor_sum = unique_phasor[1]
-                    if abs(magnitude) > max_magn:
-                        max_magn = abs(magnitude)
                     #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
                     fig, ax = plt.subplots(figsize=(4, 4))
 
@@ -298,8 +290,8 @@ elif(option == 'Single Layer Winding'):
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
-                    ax.set_ylim([-2*abs(magnitude)+2, 2*abs(magnitude)+2])
+                    ax.set_xlim([-1*max_magn+2, max_magn+2])
+                    ax.set_ylim([-1*max_magn+2, max_magn+2])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
