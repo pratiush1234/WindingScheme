@@ -102,7 +102,7 @@ def driver_code_1(theta):
     for comb in combinations:
         coils = phasor_finder1(comb, theta, dic)
         outputList.append(resultant_phasor1(coils))
-        magnitude.append(round((resultant_phasor1(coils)[2]/len(theta)),3))
+        magnitude.append(round((resultant_phasor1(coils)[2])/len(theta),3))
     #print(magnitude)
     for comb in combinations:  
 #         combb.append(str(comb))
@@ -318,7 +318,7 @@ def driver_code_2(theta):
         phasor = out_phasor2(coils)
         #print(phasor)
         out_coil.append(out_phasor2(coils))
-        magnitude.append(round(phasor[-1]/len(theta)))
+        magnitude.append(round((phasor[-1])/len(theta),3))
     dic = {'Magnitude':magnitude, 'Coil Connection':comb}
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
