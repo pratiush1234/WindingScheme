@@ -67,13 +67,16 @@ def returnKey(dic,ele):
         
 def phasor_finder1(comb, theta, dic):
     coils = []
+    resistance = []
     ## Handling parallel cases
     for combination in comb:
         key = returnKey(dic,combination[0])
         temp = [1,key]
+        resistance.append(1/len(combination))
         coils.append(temp)
         temp= []
-    return coils
+    #print(resistance)
+    return coils,resistance
 
 def resultant_phasor1(coils):
     phasor_sum = 0
@@ -96,28 +99,33 @@ def driver_code_1(theta):
     combi = []
     outputList = []
     magnitude = []
+    res = []
     max_magn = 0
     for comb in combinations:
-        coils = phasor_finder1(comb, theta, dic)
+        coils, resistance = phasor_finder1(comb, theta, dic)
         outputList.append(resultant_phasor1(coils))
         magnitude.append(round((resultant_phasor1(coils)[2])/len(theta),3))
+        res.append(resistance)
+    #print(res)
+    
+    resistance = [round(sum(i),3) for i in res]
     for i in magnitude:
         max_magn = max(max_magn, abs(i))
     #print(magnitude)
     for comb in combinations:  
-#         combb.append(str(comb))
+#       combb.append(str(comb))
         combb = str(comb).replace(',), (', ')--(').replace('), (', ')--(').replace(',)',')')
 
         # Replacing ',' with '||' using replace() method
         combb = combb.replace(', ', '||')
         combi.append(combb)
         
-    dic = {'Magnitude': magnitude,'Coil Connection':combi}
+    dic = {'Coil Connection':combi,'Magnitude': magnitude,'Resistance':resistance, 'Inductance':resistance}
     #print(dic)
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
     resultant_dataframe.reset_index(drop = True,inplace = True)    
-    return sorted(outputList, key = lambda x:x[2])[-4:], resultant_dataframe.head(5), max_magn
+    return sorted(outputList, key = lambda x:x[2])[-4:], resultant_dataframe.head(5), resistance
 
 
 
