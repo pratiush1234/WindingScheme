@@ -125,7 +125,7 @@ def driver_code_1(theta):
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
     resultant_dataframe.reset_index(drop = True,inplace = True)    
-    return sorted(outputList, key = lambda x:x[2])[-4:], resultant_dataframe.head(5), resistance
+    return sorted(outputList, key = lambda x:x[2])[-4:], resultant_dataframe.head(5)
 
 
 
