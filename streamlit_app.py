@@ -112,8 +112,8 @@ if option == 'Double Layer Winding':
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-1*max_magn+2, max_magn+2])
-                    ax.set_ylim([-1*max_magn+2, max_magn+2])
+                    ax.set_xlim([-1*max_magn, max_magn])
+                    ax.set_ylim([-1*max_magn, max_magn])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -156,8 +156,8 @@ if option == 'Double Layer Winding':
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-1*max_magn+2, max_magn+2])
-                    ax.set_ylim([-1*max_magn+2, max_magn+2])
+                    ax.set_xlim([-1*max_magn, max_magn])
+                    ax.set_ylim([-1*max_magn, max_magn])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -248,8 +248,8 @@ elif(option == 'Single Layer Winding'):
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-1*max_magn+2, max_magn+2])
-                    ax.set_ylim([-1*max_magn+2, max_magn+2])
+                    ax.set_xlim([-1*max_magn, max_magn])
+                    ax.set_ylim([-1*max_magn, max_magn])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
@@ -258,7 +258,7 @@ elif(option == 'Single Layer Winding'):
                     st.write('EMF Magnitude:', magnitude, 'pu')
 ###########################################################################################################################################################
                 phasor_list_2,outputDataframe_2,max_magn = emf_polygon.driver_code_2(theta_angle)
-                st.markdown('Second Case')
+                #st.markdown('Second Case')
                 st.table(outputDataframe_2)
                 #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
                 #st.markdown('Second Case')
@@ -290,18 +290,14 @@ elif(option == 'Single Layer Winding'):
                     ax.quiver(0, 0, phasor_sum.real, phasor_sum.imag, angles='xy', scale_units='xy', scale=1, color='red')
 
                     # Set the x and y limits of the plot
-                    ax.set_xlim([-1*max_magn+2, max_magn+2])
-                    ax.set_ylim([-1*max_magn+2, max_magn+2])
+                    ax.set_xlim([-1*max_magn, max_magn])
+                    ax.set_ylim([-1*max_magn, max_magn])
 
                     # Add a title to the plot
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
                     st.write('EMF Magnitude:', magnitude, 'pu') 
-
-
-
-
 
 st.write("To know more, give us a look [link](https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html)")
 st.write("Please visit our official website [link](https://www.iitg.ac.in/e_mobility/)")
