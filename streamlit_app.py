@@ -46,10 +46,10 @@ if option == 'Double Layer Winding':
                 st.markdown(" :red[Double layer winding is not feasible for the given number of poles and slots combination.]")
             else:
                 slotin1,slotout1,slotin2,slotout2,slotin3,slotout3,theta_angle = helper.double_layer_func(number_of_phases,number_of_slots,number_of_poles)
-                arr = [n for n in range(1,int(number_of_slots)+1)]
-                arr1 = arr[:len(arr)//3]
-                arr2 = arr[len(arr)//3:2*len(arr)//3]
-                arr3 = arr[2*len(arr)//3:]
+                #arr = [n for n in range(1,int(number_of_slots)+1)]
+                arr1 = [n for n in range(1,(int(number_of_slots)//3)+1)]
+                arr2 = arr1
+                arr3 = arr1
                 df1 = pd.DataFrame(list(zip(arr1,slotin1, slotout1)),
                 columns =['Coil Number','In', 'Out']).set_index("Coil Number")
                 df2 = pd.DataFrame(list(zip(arr2,slotin2, slotout2)),
@@ -116,6 +116,7 @@ if option == 'Double Layer Winding':
                     ax.set_ylim([-1*max_magn, max_magn])
 
                     # Add a title to the plot
+                    ax.set_axis_off()
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
@@ -160,6 +161,7 @@ if option == 'Double Layer Winding':
                     ax.set_ylim([-1*max_magn, max_magn])
 
                     # Add a title to the plot
+                    ax.set_axis_off()
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
@@ -184,10 +186,9 @@ elif(option == 'Single Layer Winding'):
                 st.markdown(" :red[Single layer winding is not feasible for the given number of poles and slots combination.]")
             else:
                 slotin1,slotout1,slotin2,slotout2,slotin3,slotout3,theta_angle = helper.single_layer_func(number_of_slots,number_of_poles)
-                arr = [n for n in range(1,int(number_of_slots)+1)]
-                arr1 = arr[:len(arr)//3]
-                arr2 = arr[len(arr)//3:2*len(arr)//3]
-                arr3 = arr[2*len(arr)//3:]
+                arr1 = [n for n in range(1,(int(number_of_slots)//3)+1)]
+                arr2 = arr1
+                arr3 = arr1
                 df1 = pd.DataFrame(list(zip(arr1,slotin1, slotout1)),
                 columns =['Coil Number','In', 'Out']).set_index("Coil Number")
                 df2 = pd.DataFrame(list(zip(arr2,slotin2, slotout2)),
@@ -252,6 +253,8 @@ elif(option == 'Single Layer Winding'):
                     ax.set_ylim([-1*max_magn, max_magn])
 
                     # Add a title to the plot
+                    ax.set_axis_off()
+
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
@@ -294,6 +297,7 @@ elif(option == 'Single Layer Winding'):
                     ax.set_ylim([-1*max_magn, max_magn])
 
                     # Add a title to the plot
+                    ax.set_axis_off()
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
