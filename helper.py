@@ -134,6 +134,13 @@ def double_layer_func(number_of_phases,number_of_slots,number_of_poles):
         if slotout3[i]>number_of_slots:
             slotout3[i]  -= number_of_slots
 
+    indx = []
+    s = set(slotin1)
+    for ele in s:
+        indexes = [index for index, value in enumerate(slotin) if value == ele]
+        indx.extend(indexes)
+    theta = [theta1[x] for x in indx]
+
     def mapp(arr):
         for i in range(len(arr)):
             arr[i] = math.ceil(arr[i])
@@ -143,7 +150,7 @@ def double_layer_func(number_of_phases,number_of_slots,number_of_poles):
     slotout2=mapp(slotout2)
     slotin3=mapp(slotin3)
     slotout3=mapp(slotout3)
-    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta1
+    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta
 
 def double_layer_checkForFullPitchedWinding(number_of_phases,number_of_slots,number_of_poles):
     number_of_phases=int(number_of_phases)
@@ -381,12 +388,19 @@ def single_layer_func(number_of_slots,number_of_poles):
                         slotout3.append(slotout[j])
                         set1[j]=True
     theta2 = theta
+
+    indx = []
+    s = set(slotin1)
+    for ele in s:
+        indexes = [index for index, value in enumerate(slotin) if value == ele]
+        indx.extend(indexes)
+    theta = [theta2[x] for x in indx]
     # Call the above functions on desierd lists        
     slotin2=mapp(slotin2)
     slotout2=mapp(slotout2)
     slotin3=mapp(slotin3)
     slotout3=mapp(slotout3)
-    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta2
+    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta
 
 def single_layer_misc_parameter(number_of_slots,number_of_poles):
     number_of_slots = int(number_of_slots)
