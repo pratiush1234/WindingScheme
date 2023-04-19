@@ -270,26 +270,36 @@ def connection_diagram(comb,dic):
     lists_in_tuples = []
     coils = []
     sub_coils = []
+    resistance = []
+    temp_res = 0
     for element in comb:
         if isinstance(element, tuple):
+            temp = []
             for item in element:
                 if isinstance(item, list):
                     lists_in_tuples.append(item)
+                    temp.append(len(item))
+
                 else:
                     #print(element)
                     key = returnKey2(dic,element[0])
                     coils.append([1,key])
+                    resistance.append(1/len(item))
                     break
+            for ele in temp:
+                temp_res += 1/ele
+            resistance.append(1/temp_res)
         else:
             key = returnKey2(dic,element)
             temp_coil = [1,key]
             coils.append(temp_coil)
+            resistance.append(1)
     for combination in lists_in_tuples:
         key = returnKey2(dic,combination[0])
         sub_coils.append([1,key])
     temp = resultant_phasor2(sub_coils)
     coils.append(temp)
-    return coils
+    return coils, round(sum(resistance),3)
 
 def coil_representation(input_str):
     import re
@@ -314,6 +324,7 @@ def driver_code_2(theta):
     end = []
     magnitude = []
     comb = []
+    resistance = []
     max_magn = 0
  
     
@@ -323,14 +334,15 @@ def driver_code_2(theta):
         ele = coil_representation(str(ele))
         comb.append(ele)
     for ele in combination:
-        coils = connection_diagram(ele,dic)
+        coils,res = connection_diagram(ele,dic)
         phasor = out_phasor2(coils)
         #print(phasor)
+        resistance.append(res)
         out_coil.append(out_phasor2(coils))
         magnitude.append(round((phasor[-1])/len(theta),3))
     for i in magnitude:
         max_magn = max(max_magn, abs(i))
-    dic = {'Magnitude':magnitude, 'Coil Connection':comb}
+    dic = {'Magnitude':magnitude,'Resistance':resistance,'Inductance':resistance,'Coil Connection':comb}
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'Magnitude',ascending = False)
     resultant_dataframe.reset_index(drop = True,inplace = True)
