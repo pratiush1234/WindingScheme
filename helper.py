@@ -139,7 +139,7 @@ def double_layer_func(number_of_phases,number_of_slots,number_of_poles):
     for ele in s:
         indexes = [index for index, value in enumerate(slotin) if value == ele]
         indx.extend(indexes)
-    theta = [theta[x] for x in indx]
+    theta = [theta1[x] for x in indx]
 
     def mapp(arr):
         for i in range(len(arr)):
