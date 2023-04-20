@@ -81,7 +81,6 @@ if option == 'Double Layer Winding':
 
 
                 phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle)
-                
                 st.table(outputDataframe_1)
                 #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
                 for unique_phasor in phasor_list_1:
@@ -120,7 +119,7 @@ if option == 'Double Layer Winding':
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
-                    st.write('EMF Magnitude:', magnitude, 'pu')
+                    st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 ###################################################################################################################################################
                 #st.markdown('*Second Case*')
                 phasor_list_2,outputDataframe_2,max_magn  = emf_polygon.driver_code_2(theta_angle)
@@ -165,7 +164,7 @@ if option == 'Double Layer Winding':
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
-                    st.write('EMF Magnitude:', magnitude, 'pu')
+                    st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 
 
         else:
@@ -258,7 +257,7 @@ elif(option == 'Single Layer Winding'):
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
-                    st.write('EMF Magnitude:', magnitude, 'pu')
+                    st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 ###########################################################################################################################################################
                 phasor_list_2,outputDataframe_2,max_magn = emf_polygon.driver_code_2(theta_angle)
                 #st.markdown('Second Case')
@@ -301,7 +300,7 @@ elif(option == 'Single Layer Winding'):
                     ax.set_title('EMF Polygon')
                     st.pyplot(fig)
                     #st.write("Magnitude: ", magnitude," pu")
-                    st.write('EMF Magnitude:', magnitude, 'pu') 
+                    st.write('EMF Magnitude:', magnitude/max_magn, 'pu') 
 
 st.write("To know more, give us a look [link](https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html)")
 st.write("Please visit our official website [link](https://www.iitg.ac.in/e_mobility/)")
