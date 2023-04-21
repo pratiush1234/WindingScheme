@@ -123,7 +123,7 @@ if option == 'Double Layer Winding':
                     encoded_fig = base64.b64encode(buffer.getvalue()).decode()
 
                     # Wrap the img tag with an a tag
-                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="500"></a>'
+                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="400"></a>'
                     figures.append(img_tag)
 
                 outputDataframe_1['EMF Polygon'] = figures
@@ -177,7 +177,7 @@ if option == 'Double Layer Winding':
                     encoded_fig = base64.b64encode(buffer.getvalue()).decode()
 
                     # Wrap the img tag with an a tag
-                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="500"></a>'
+                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="400"></a>'
                     figures.append(img_tag)
 
                 outputDataframe_2['EMF Polygon'] = figures
@@ -279,7 +279,7 @@ elif(option == 'Single Layer Winding'):
                     encoded_fig = base64.b64encode(buffer.getvalue()).decode()
 
                     # Wrap the img tag with an a tag
-                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="500"></a>'
+                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="400"></a>'
                     figures.append(img_tag)
 
                 outputDataframe_1['EMF Polygon'] = figures
@@ -329,7 +329,7 @@ elif(option == 'Single Layer Winding'):
                     encoded_fig = base64.b64encode(buffer.getvalue()).decode()
 
                     # Wrap the img tag with an a tag
-                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="500"></a>'
+                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="400"></a>'
                     figures.append(img_tag)
 
                 outputDataframe_2['EMF Polygon'] = figures
