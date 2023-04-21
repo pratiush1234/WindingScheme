@@ -341,7 +341,7 @@ elif(option == 'Single Layer Winding'):
                 #pd.set_option('display.max_colwidth', 10)
                 #outputDataframe_2.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
                 df_html = outputDataframe_2.to_html(escape=False, index=False)
-                st.markdown("<h1 style='text-align: center; color: black; font-weight: bold; font-size: 36px;'>[Case 1: Distinct Connection]</h1>", unsafe_allow_html=True)
+                st.markdown("<h1 style='text-align: center; color: black; font-weight: bold; font-size: 36px;'>[Case 2: Distinct Connection]</h1>", unsafe_allow_html=True)
                 st.write(df_html, unsafe_allow_html=True)
 
                     #st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
