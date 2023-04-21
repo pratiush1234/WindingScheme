@@ -130,6 +130,9 @@ if option == 'Double Layer Winding':
                 #pd.set_option('display.max_colwidth', 10)
                 #outputDataframe_1.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
                 df_html = outputDataframe_1.to_html(escape=False, index=False)
+
+                st.markdown("<h1 style='text-align: center; color: black; font-weight: bold; font-size: 36px;'>[Case 1: Self Connection]</h1>", unsafe_allow_html=True)
+
                 st.write(df_html, unsafe_allow_html=True)
                     #st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 ###################################################################################################################################################
@@ -184,6 +187,7 @@ if option == 'Double Layer Winding':
                 #pd.set_option('display.max_colwidth', 10)
                 #outputDataframe_2.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
                 df_html = outputDataframe_2.to_html(escape=False, index=False)
+                st.markdown("<h1 style='text-align: center; color: black; font-weight: bold; font-size: 36px;'>[Case 1: Self Connection]</h1>", unsafe_allow_html=True)
                 st.write(df_html, unsafe_allow_html=True)
                     #st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 
@@ -286,6 +290,7 @@ elif(option == 'Single Layer Winding'):
                 #pd.set_option('display.max_colwidth', 10)
                 #outputDataframe_1.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
                 df_html = outputDataframe_1.to_html(escape=False, index=False)
+                st.markdown("<h1 style='text-align: center; color: black; font-weight: bold; font-size: 36px;'>[Case 1: Self Connection]</h1>", unsafe_allow_html=True)
                 st.write(df_html, unsafe_allow_html=True)
 ###########################################################################################################################################################
                 phasor_list_2, outputDataframe_2, max_magn = emf_polygon.driver_code_2(theta_angle)
@@ -336,6 +341,7 @@ elif(option == 'Single Layer Winding'):
                 #pd.set_option('display.max_colwidth', 10)
                 #outputDataframe_2.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
                 df_html = outputDataframe_2.to_html(escape=False, index=False)
+                st.markdown("<h1 style='text-align: center; color: black; font-weight: bold; font-size: 36px;'>[Case 1: Self Connection]</h1>", unsafe_allow_html=True)
                 st.write(df_html, unsafe_allow_html=True)
 
                     #st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
