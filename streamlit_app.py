@@ -5,6 +5,8 @@ import helper
 import emf_polygon
 import matplotlib.pyplot as plt
 import pandas as pd
+import io
+import base64
 
 number_of_phases = 3
 st.set_page_config(page_title="Winding Scheme")
@@ -81,14 +83,13 @@ if option == 'Double Layer Winding':
 
 
                 phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle)
-                st.table(outputDataframe_1)
-                #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
+                figures = []
+
                 for unique_phasor in phasor_list_1:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
                     phasor_sum = unique_phasor[1]
 
-                    #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
                     fig, ax = plt.subplots(figsize=(4, 4))
 
                     # Initialize the starting point of the polygon at the origin
@@ -117,23 +118,32 @@ if option == 'Double Layer Winding':
                     # Add a title to the plot
                     ax.set_axis_off()
                     ax.set_title('EMF Polygon')
-                    st.pyplot(fig)
-                    #st.write("Magnitude: ", magnitude," pu")
-                    st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
+                    buffer = io.BytesIO()
+                    fig.savefig(buffer, format='png')
+                    encoded_fig = base64.b64encode(buffer.getvalue()).decode()
+
+                    # Wrap the img tag with an a tag
+                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="500"></a>'
+                    figures.append(img_tag)
+
+                outputDataframe_1['EMF Polygon'] = figures
+                #pd.set_option('display.max_colwidth', 10)
+                #outputDataframe_1.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
+                df_html = outputDataframe_1.to_html(escape=False, index=False)
+                st.write(df_html, unsafe_allow_html=True)
+                    #st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 ###################################################################################################################################################
                 #st.markdown('*Second Case*')
                 phasor_list_2,outputDataframe_2,max_magn  = emf_polygon.driver_code_2(theta_angle)
                 #st.write(phasor_list_2)
-                st.table(outputDataframe_2)
-                
-                #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
+                #st.table(outputDataframe_2)
+                figures = []
+
                 for unique_phasor in phasor_list_2:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
                     phasor_sum = unique_phasor[1]
 
-
-                    #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
                     fig, ax = plt.subplots(figsize=(4, 4))
 
                     # Initialize the starting point of the polygon at the origin
@@ -162,9 +172,20 @@ if option == 'Double Layer Winding':
                     # Add a title to the plot
                     ax.set_axis_off()
                     ax.set_title('EMF Polygon')
-                    st.pyplot(fig)
-                    #st.write("Magnitude: ", magnitude," pu")
-                    st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
+                    buffer = io.BytesIO()
+                    fig.savefig(buffer, format='png')
+                    encoded_fig = base64.b64encode(buffer.getvalue()).decode()
+
+                    # Wrap the img tag with an a tag
+                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="500"></a>'
+                    figures.append(img_tag)
+
+                outputDataframe_2['EMF Polygon'] = figures
+                #pd.set_option('display.max_colwidth', 10)
+                #outputDataframe_2.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
+                df_html = outputDataframe_2.to_html(escape=False, index=False)
+                st.write(df_html, unsafe_allow_html=True)
+                    #st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 
 
         else:
@@ -217,15 +238,14 @@ elif(option == 'Single Layer Winding'):
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
                 phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle)
-                st.table(outputDataframe_1)
-                #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
-                # max_magn = 0
+                #phasor_list_2, outputDataframe_2, max_magn = emf_polygon.driver_code_2(theta_angle)
+                figures = []
+
                 for unique_phasor in phasor_list_1:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
                     phasor_sum = unique_phasor[1]
 
-                    #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
                     fig, ax = plt.subplots(figsize=(4, 4))
 
                     # Initialize the starting point of the polygon at the origin
@@ -253,23 +273,29 @@ elif(option == 'Single Layer Winding'):
 
                     # Add a title to the plot
                     ax.set_axis_off()
-
                     ax.set_title('EMF Polygon')
-                    st.pyplot(fig)
-                    #st.write("Magnitude: ", magnitude," pu")
-                    st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
+                    buffer = io.BytesIO()
+                    fig.savefig(buffer, format='png')
+                    encoded_fig = base64.b64encode(buffer.getvalue()).decode()
+
+                    # Wrap the img tag with an a tag
+                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="500"></a>'
+                    figures.append(img_tag)
+
+                outputDataframe_1['EMF Polygon'] = figures
+                #pd.set_option('display.max_colwidth', 10)
+                #outputDataframe_1.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
+                df_html = outputDataframe_1.to_html(escape=False, index=False)
+                st.write(df_html, unsafe_allow_html=True)
 ###########################################################################################################################################################
-                phasor_list_2,outputDataframe_2,max_magn = emf_polygon.driver_code_2(theta_angle)
-                #st.markdown('Second Case')
-                st.table(outputDataframe_2)
-                #st.write(("[-----(connected in Parallel)---[connected in Series]---(connected in Parallel)-----]"))
-                #st.markdown('Second Case')
+                phasor_list_2, outputDataframe_2, max_magn = emf_polygon.driver_code_2(theta_angle)
+                figures = []
 
                 for unique_phasor in phasor_list_2:
                     phasors = unique_phasor[0]
                     magnitude = unique_phasor[2]
                     phasor_sum = unique_phasor[1]
-                    #phasors, magnitude, angle, phasor_sum,index_list = emf_polygon.emf_polygon(theta_angle)
+
                     fig, ax = plt.subplots(figsize=(4, 4))
 
                     # Initialize the starting point of the polygon at the origin
@@ -298,9 +324,21 @@ elif(option == 'Single Layer Winding'):
                     # Add a title to the plot
                     ax.set_axis_off()
                     ax.set_title('EMF Polygon')
-                    st.pyplot(fig)
-                    #st.write("Magnitude: ", magnitude," pu")
-                    st.write('EMF Magnitude:', magnitude/max_magn, 'pu') 
+                    buffer = io.BytesIO()
+                    fig.savefig(buffer, format='png')
+                    encoded_fig = base64.b64encode(buffer.getvalue()).decode()
+
+                    # Wrap the img tag with an a tag
+                    img_tag = f'<a href="data:image/png;base64,{encoded_fig}" target="_blank"><img src="data:image/png;base64,{encoded_fig}" width="500"></a>'
+                    figures.append(img_tag)
+
+                outputDataframe_2['EMF Polygon'] = figures
+                #pd.set_option('display.max_colwidth', 10)
+                #outputDataframe_2.style.set_properties(subset=['Coil Connection'], **{'width': '1500px'})
+                df_html = outputDataframe_2.to_html(escape=False, index=False)
+                st.write(df_html, unsafe_allow_html=True)
+
+                    #st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 
 st.write("To know more, give us a look [link](https://c-tarac.github.io/AI-ML-Based-Motor-Design.github.io/index.html)")
 st.write("Please visit our official website [link](https://www.iitg.ac.in/e_mobility/)")
