@@ -318,7 +318,7 @@ def coil_representation(input_str):
     
     input_str = input_str.replace('[','(').replace(']',')').replace(" ","")#.replace('([','((').replace('])','))')
     
-    return input_str
+    return [input_str]
 
 def driver_code_2(theta):
     out_coil = []
