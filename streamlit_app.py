@@ -117,7 +117,7 @@ if option == 'Double Layer Winding':
 
                     # Add a title to the plot
                     ax.set_axis_off()
-                    ax.set_title('EMF Polygon')
+                    #ax.set_title('EMF Polygon')
                     buffer = io.BytesIO()
                     fig.savefig(buffer, format='png')
                     encoded_fig = base64.b64encode(buffer.getvalue()).decode()
@@ -174,7 +174,7 @@ if option == 'Double Layer Winding':
 
                     # Add a title to the plot
                     ax.set_axis_off()
-                    ax.set_title('EMF Polygon')
+                    #ax.set_title('EMF Polygon')
                     buffer = io.BytesIO()
                     fig.savefig(buffer, format='png')
                     encoded_fig = base64.b64encode(buffer.getvalue()).decode()
@@ -277,7 +277,7 @@ elif(option == 'Single Layer Winding'):
 
                     # Add a title to the plot
                     ax.set_axis_off()
-                    ax.set_title('EMF Polygon')
+                    #ax.set_title('EMF Polygon')
                     buffer = io.BytesIO()
                     fig.savefig(buffer, format='png')
                     encoded_fig = base64.b64encode(buffer.getvalue()).decode()
@@ -328,7 +328,7 @@ elif(option == 'Single Layer Winding'):
 
                     # Add a title to the plot
                     ax.set_axis_off()
-                    ax.set_title('EMF Polygon')
+                    #ax.set_title('EMF Polygon')
                     buffer = io.BytesIO()
                     fig.savefig(buffer, format='png')
                     encoded_fig = base64.b64encode(buffer.getvalue()).decode()
