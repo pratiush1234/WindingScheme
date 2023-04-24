@@ -17,7 +17,7 @@ def double_layer_checkPossiblity(number_of_phases,number_of_slots,number_of_pole
             break
 
     # Step 3
-    if number_of_phases%3 != 0 or number_of_slots % 3 != 0 or number_of_slots_per_pole_per_phase >2 or coil_offset.is_integer()==False:
+    if number_of_phases%3 != 0 or number_of_slots % 3 != 0 or coil_offset.is_integer()==False:
         #print("Double layer winding is not feasible for the given number of poles and slots combination.")
         flag = 1
     return round(coil_offset,3), flag, round(number_of_slots_per_pole_per_phase,3)
