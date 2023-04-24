@@ -48,6 +48,8 @@ def double_layer_func(number_of_phases,number_of_slots,number_of_poles):
     slot_pitch_mech = 360 / number_of_slots
     slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
     coil_span = int(number_of_slots / number_of_poles)
+    if coil_span == 0:
+        coil_span = 1
     coil_pitch = coil_span * slot_pitch_elec
     chording_angle = (180 - slot_pitch_elec) / 2
     number_of_coils = number_of_slots*2
