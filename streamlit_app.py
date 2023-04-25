@@ -138,7 +138,7 @@ if option == 'Double Layer Winding':
                     #st.write('EMF Magnitude:', magnitude/max_magn, 'pu')
 ###################################################################################################################################################
                 #st.markdown('*Second Case*')
-                phasor_list_2,outputDataframe_2,max_magn  = emf_polygon.driver_code_2(theta_angle)
+                phasor_list_2,outputDataframe_2,max_magn  = emf_polygon.driver_code_2(theta_angle,pitch_factor)
                 #st.write(phasor_list_2)
                 #st.table(outputDataframe_2)
                 figures = []
@@ -297,7 +297,7 @@ elif(option == 'Single Layer Winding'):
                 st.markdown("<h1 style='text-align: center; color: black; font-weight: bold; font-size: 36px;'>[Case 1: Self Connection]</h1>", unsafe_allow_html=True)
                 st.write(df_html, unsafe_allow_html=True)
 ###########################################################################################################################################################
-                phasor_list_2, outputDataframe_2, max_magn = emf_polygon.driver_code_2(theta_angle)
+                phasor_list_2, outputDataframe_2, max_magn = emf_polygon.driver_code_2(theta_angle,pitch_factor)
                 figures = []
 
                 for unique_phasor in phasor_list_2:
