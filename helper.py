@@ -50,9 +50,10 @@ def double_layer_func(number_of_phases,number_of_slots,number_of_poles):
     coil_span = int(number_of_slots / number_of_poles)
     if coil_span == 0:
         coil_span = 1
-    coil_pitch = coil_span * slot_pitch_elec
-    chording_angle = (180 - slot_pitch_elec) / 2
-    number_of_coils = number_of_slots*2
+    coil_pitch_mech = coil_span * slot_pitch_mech
+    coil_pitch_mech = coil_span * slot_pitch_elec
+    chording_angle = (180 - slot_pitch_mech) / 2
+    number_of_coils = number_of_slots
 
 
     # Step 10: Define lists
@@ -181,11 +182,23 @@ def double_layer_misc_parameter(number_of_slots,number_of_poles):
     slot_pitch_mech = 360 / number_of_slots
     slot_pitch_elec = (number_of_poles / 2) * slot_pitch_mech
     coil_span = int(number_of_slots / number_of_poles)
-    coil_pitch = coil_span * slot_pitch_elec
-    # calculation for pitch factor // give angles in radians 
+    if coil_span == 0:
+        coil_span = 1
+    coil_pitch_mech = coil_span * slot_pitch_mech
+    coil_pitch_mech = coil_span * slot_pitch_elec
+    chording_angle = (180 - coil_pitch_mech) / 2
+    number_of_coils = number_of_slots
     
-    chording_angle = (180 - coil_pitch) / 2
-    number_of_coils = number_of_slots*2
+    
+    
+#     coil_pitch = coil_span * slot_pitch_elec
+#     # calculation for pitch factor // give angles in radians 
+    
+#     chording_angle = (180 - coil_pitch) / 2
+#     number_of_coils = number_of_slots
+    
+    
+    
 
     pitch_factor = math.cos((math.pi/180)*chording_angle/2)
    
