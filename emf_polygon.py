@@ -94,12 +94,13 @@ def resultant_phasor1(coils):
     #angle = cmath.phase(phasor_sum)
     return [phasors, phasor_sum, round(magnitude,3)]
 
-def driver_code_1(theta):
+def driver_code_1(theta,pitch_factor):
     combinations, dic = combinations_emf1(theta)
     combi = []
     outputList = []
     magnitude = []
     res = []
+    winding_factor = []
     max_magn = 0
     for comb in combinations:
         coils, resistance = phasor_finder1(comb, theta, dic)
@@ -119,8 +120,12 @@ def driver_code_1(theta):
         # Replacing ',' with '||' using replace() method
         combb = combb.replace(', ', '||')
         combi.append(combb)
+    for ele in magnitude:
+        temp = ele*pitch_factor
+        temp = round(temp,3)
+        winding_factor.append(temp)
         
-    dic = {'Coil Connection':combi,'EMF(pu)': magnitude,'Resistance(pu)':resistance, 'Inductance(pu)':resistance}
+    dic = {'Coil Connection':combi,'EMF(pu)': magnitude,'Resistance(pu)':resistance, 'Inductance(pu)':resistance,'Distribution Factor':magnitude,'Winding Factor':winding_factor}
     #print(dic)
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'EMF(pu)',ascending = False)
@@ -320,12 +325,13 @@ def coil_representation(input_str):
     
     return [input_str]
 
-def driver_code_2(theta):
+def driver_code_2(theta,pitch_factor):
     out_coil = []
     end = []
     magnitude = []
     comb = []
     resistance = []
+    winding_factor = []
     max_magn = 0
  
     combination, dic = combinations_emf2(theta)
@@ -340,9 +346,12 @@ def driver_code_2(theta):
         resistance.append(res/len(theta))
         out_coil.append(out_phasor2(coils))
         magnitude.append(round((phasor[-1])/len(theta),3))
-    # for i in magnitude:
+    for ele in magnitude:
+        temp = ele*pitch_factor
+        temp = round(temp,3)
+        winding_factor.append(temp)
     #     max_magn = max(max_magn, abs(i))
-    dic = {'Coil Connection':comb,'EMF(pu)':magnitude,'Resistance(pu)':resistance,'Inductance(pu)':resistance}
+    dic = {'Coil Connection':comb,'EMF(pu)':magnitude,'Resistance(pu)':resistance,'Inductance(pu)':resistance,'Distribution Factor':magnitude,'Winding Factor':winding_factor}
     outputDataframe = pd.DataFrame(dic)
     resultant_dataframe = outputDataframe.sort_values(by = 'EMF(pu)',ascending = False)
     resultant_dataframe.reset_index(drop = True,inplace = True)
