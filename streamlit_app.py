@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import io
 import base64
+import sys
 
 number_of_phases = 3
 st.set_page_config(page_title="Winding Scheme")
@@ -76,13 +77,13 @@ if option == 'Double Layer Winding':
                 pitch_factor, distribution_factor, winding_factor = helper.double_layer_misc_parameter(number_of_slots,number_of_poles)
 
                 st.write('Pitch Factor:',pitch_factor)
-                st.write('Distribution Factor:',distribution_factor)
-                st.write('Winding Factor:',winding_factor)
+                #st.write('Distribution Factor:',distribution_factor)
+                #st.write('Winding Factor:',winding_factor)
                 st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
 
-                phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle)
+                phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle,pitch_factor)
                 figures = []
 
                 for unique_phasor in phasor_list_1:
@@ -209,7 +210,10 @@ elif(option == 'Single Layer Winding'):
             if flag == 1:
                 st.markdown(" :red[Single layer winding is not feasible for the given number of poles and slots combination.]")
             else:
-                slotin1,slotout1,slotin2,slotout2,slotin3,slotout3,theta_angle = helper.single_layer_func(number_of_slots,number_of_poles)
+                try:
+                    slotin1,slotout1,slotin2,slotout2,slotin3,slotout3,theta_angle = helper.single_layer_func(number_of_slots,number_of_poles)
+                except:
+                    sys.exit(1)
                 arr1 = [n for n in range(1,(int(number_of_slots)//3)+1)]
                 arr2 = arr1
                 arr3 = arr1
@@ -236,12 +240,12 @@ elif(option == 'Single Layer Winding'):
 
                 pitch_factor, distribution_factor, winding_factor = helper.single_layer_misc_parameter(number_of_slots,number_of_poles)
                 st.write('Pitch Factor:',pitch_factor)
-                st.write('Distribution Factor:',distribution_factor)
-                st.write('Winding Factor:',winding_factor)
+                #st.write('Distribution Factor:',distribution_factor)
+                #st.write('Winding Factor:',winding_factor)
                 st.write('Coil pitch in electrical degrees: ', coil_pitch_elec)
                 st.write('Coil pitch in mechanical degrees: ', coil_pitch_mech)
 
-                phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle)
+                phasor_list_1,outputDataframe_1,max_magn = emf_polygon.driver_code_1(theta_angle,pitch_factor)
                 #phasor_list_2, outputDataframe_2, max_magn = emf_polygon.driver_code_2(theta_angle)
                 figures = []
 
