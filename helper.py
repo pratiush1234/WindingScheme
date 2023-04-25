@@ -259,150 +259,153 @@ def single_layer_checkPossiblity(number_of_slots,number_of_poles):
 
   
 def single_layer_func(number_of_slots,number_of_poles):
-    def mapp(arr):
-        for i in range(len(arr)):
-            arr[i] = math.ceil(arr[i])
-        return arr
-    number_of_poles = int(number_of_poles)
-    number_of_slots = int(number_of_slots)
-    number_of_phases = 3    
+    try:
+        def mapp(arr):
+            for i in range(len(arr)):
+                arr[i] = math.ceil(arr[i])
+            return arr
+        number_of_poles = int(number_of_poles)
+        number_of_slots = int(number_of_slots)
+        number_of_phases = 3    
 
-# define total number of coils 
-    number_of_coils = number_of_slots/2
+    # define total number of coils 
+        number_of_coils = number_of_slots/2
 
-    # coils per pole
-    coils_per_pole = number_of_slots/(2*number_of_poles)
+        # coils per pole
+        coils_per_pole = number_of_slots/(2*number_of_poles)
 
-    # coils per phase
-    coils_per_phase = number_of_slots/(2*3)
+        # coils per phase
+        coils_per_phase = number_of_slots/(2*3)
 
-    # define coil span
-    coil_span = number_of_slots//number_of_poles
+        # define coil span
+        coil_span = number_of_slots//number_of_poles
 
-    # define motor periodicity or number of rotation
-    motor_periodicity = math.gcd(number_of_slots,number_of_poles//2)
+        # define motor periodicity or number of rotation
+        motor_periodicity = math.gcd(number_of_slots,number_of_poles//2)
 
-    # define phase group
-    phase_group = number_of_slots/(4*number_of_phases)
+        # define phase group
+        phase_group = number_of_slots/(4*number_of_phases)
 
-    # define number of spokes
-    number_of_spokes = number_of_slots/motor_periodicity
+        # define number of spokes
+        number_of_spokes = number_of_slots/motor_periodicity
 
-    coil_number = [i for i in range(1,(number_of_slots+2)//2)]
-    #print('coil_number: ',coil_number)
-    # define coil pitch
-    coil_pitch_mech = 360/number_of_coils
-    #print('coi_pitch_mech: ',coil_pitch_mech)
-    coil_pitch_elec = (number_of_poles/2)*coil_pitch_mech
-    #print('coi_pitch_elec: ',coil_pitch_elec)
-    coil_angle_mech = [n*coil_pitch_mech for n in range(len(coil_number))]
-    #print('coil_angle_mech: ',coil_angle_mech)
-    coil_angle_elec = [n*coil_pitch_elec for n in range(len(coil_number))]
-    #print('coil_angle_elec: ',coil_angle_elec)
-
-
-    list1 = []
-    iter_ = 1
-    for i in range(int(number_of_slots/number_of_spokes)):
-        temp = []
-        for j in range(int(number_of_spokes)):
-            temp.append(iter_)      
-            iter_ += 1
-        list1.append(temp)     
-
-    arr = []
-    for ele in list1:
-        arr.append(ele[:len(ele)//2])
-        arr.append(ele[len(ele)//2:])
-
-# Now again assign arr to the list1 which is in the required form.
-    list1 = arr
-
-    theta = coil_angle_elec
+        coil_number = [i for i in range(1,(number_of_slots+2)//2)]
+        #print('coil_number: ',coil_number)
+        # define coil pitch
+        coil_pitch_mech = 360/number_of_coils
+        #print('coi_pitch_mech: ',coil_pitch_mech)
+        coil_pitch_elec = (number_of_poles/2)*coil_pitch_mech
+        #print('coi_pitch_elec: ',coil_pitch_elec)
+        coil_angle_mech = [n*coil_pitch_mech for n in range(len(coil_number))]
+        #print('coil_angle_mech: ',coil_angle_mech)
+        coil_angle_elec = [n*coil_pitch_elec for n in range(len(coil_number))]
+        #print('coil_angle_elec: ',coil_angle_elec)
 
 
-    # convert slot angle between -180 to +180 degrees        
-    for i in range(0,int(number_of_coils)):
-        theta[i] = ((theta[i]+180)%360)-180
+        list1 = []
+        iter_ = 1
+        for i in range(int(number_of_slots/number_of_spokes)):
+            temp = []
+            for j in range(int(number_of_spokes)):
+                temp.append(iter_)      
+                iter_ += 1
+            list1.append(temp)     
 
-    # round-off theta to nearest integer
-    for i in range(len(theta)):
-        theta[i] = math.ceil(theta[i]) 
+        arr = []
+        for ele in list1:
+            arr.append(ele[:len(ele)//2])
+            arr.append(ele[len(ele)//2:])
 
-    # define slotin and slotout
-    slotin = [x for i in range(len(list1)) for x in list1[i] if i%2==0]
-    slotout = [x for i in range(len(list1)) for x in list1[i] if i%2==1]
-        
-    # initialize a list for storing relative slot angle for phase A     
-    thetai = [x+360 if x<0 else x for x in theta ]
+    # Now again assign arr to the list1 which is in the required form.
+        list1 = arr
+
+        theta = coil_angle_elec
 
 
-    # # take out positive slot angles
-    # for i in range(0,int(number_of_coils)):
-    #     if theta[i] >= 0:
-    #         theta1.append(theta[i])   
+        # convert slot angle between -180 to +180 degrees        
+        for i in range(0,int(number_of_coils)):
+            theta[i] = ((theta[i]+180)%360)-180
 
-    # Now sort the positive relative slot angles
-    theta1 = sorted(thetai)  
-    # Final step to select the phases.
-    slotin1 = []
-    slotout1 = []
-    set1=  [False] * int(number_of_coils)
-    for i in range(len(theta1)):
+        # round-off theta to nearest integer
+        for i in range(len(theta)):
+            theta[i] = math.ceil(theta[i]) 
 
-        for j in range(int(number_of_coils)):
-            if(len(slotin1)== int(number_of_coils)//3):
-                break
-            else:
-                if thetai[j]== theta1[i]:
-                    if set1[j] ==False:
-                        slotin1.append(slotin[j])
-                        slotout1.append(slotout[j])
-                        set1[j]=True    
-                        
-    slotin2 = []
-    slotout2 = []
+        # define slotin and slotout
+        slotin = [x for i in range(len(list1)) for x in list1[i] if i%2==0]
+        slotout = [x for i in range(len(list1)) for x in list1[i] if i%2==1]
 
-    for i in range(len(theta1)):
+        # initialize a list for storing relative slot angle for phase A     
+        thetai = [x+360 if x<0 else x for x in theta ]
 
-        for j in range(int(number_of_coils)):
-            if(len(slotin2)== int(number_of_coils)//3):
-                break
-            else:
-                if thetai[j]== theta1[i]:
-                    if set1[j] ==False:
-                        slotin2.append(slotin[j])
-                        slotout2.append(slotout[j])
-                        set1[j]=True
+
+        # # take out positive slot angles
+        # for i in range(0,int(number_of_coils)):
+        #     if theta[i] >= 0:
+        #         theta1.append(theta[i])   
+
+        # Now sort the positive relative slot angles
+        theta1 = sorted(thetai)  
         # Final step to select the phases.
-    slotin3 = []
-    slotout3 = []
+        slotin1 = []
+        slotout1 = []
+        set1=  [False] * int(number_of_coils)
+        for i in range(len(theta1)):
 
-    for i in range(len(theta1)):
+            for j in range(int(number_of_coils)):
+                if(len(slotin1)== int(number_of_coils)//3):
+                    break
+                else:
+                    if thetai[j]== theta1[i]:
+                        if set1[j] ==False:
+                            slotin1.append(slotin[j])
+                            slotout1.append(slotout[j])
+                            set1[j]=True    
 
-        for j in range(int(number_of_coils)):
-            if(len(slotin3)== int(number_of_coils)//3):
-                break
-            else:
-                if thetai[j]== theta1[i]:
-                    if set1[j] ==False:
-                        slotin3.append(slotin[j])
-                        slotout3.append(slotout[j])
-                        set1[j]=True
-    theta2 = theta
+        slotin2 = []
+        slotout2 = []
 
-    indx = []
-    s = set(slotin1)
-    for ele in s:
-        indexes = [index for index, value in enumerate(slotin) if value == ele]
-        indx.extend(indexes)
-    theta = [theta2[x] for x in indx]
-    # Call the above functions on desierd lists        
-    slotin2=mapp(slotin2)
-    slotout2=mapp(slotout2)
-    slotin3=mapp(slotin3)
-    slotout3=mapp(slotout3)
-    return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta
+        for i in range(len(theta1)):
+
+            for j in range(int(number_of_coils)):
+                if(len(slotin2)== int(number_of_coils)//3):
+                    break
+                else:
+                    if thetai[j]== theta1[i]:
+                        if set1[j] ==False:
+                            slotin2.append(slotin[j])
+                            slotout2.append(slotout[j])
+                            set1[j]=True
+            # Final step to select the phases.
+        slotin3 = []
+        slotout3 = []
+
+        for i in range(len(theta1)):
+
+            for j in range(int(number_of_coils)):
+                if(len(slotin3)== int(number_of_coils)//3):
+                    break
+                else:
+                    if thetai[j]== theta1[i]:
+                        if set1[j] ==False:
+                            slotin3.append(slotin[j])
+                            slotout3.append(slotout[j])
+                            set1[j]=True
+        theta2 = theta
+
+        indx = []
+        s = set(slotin1)
+        for ele in s:
+            indexes = [index for index, value in enumerate(slotin) if value == ele]
+            indx.extend(indexes)
+        theta = [theta2[x] for x in indx]
+        # Call the above functions on desierd lists        
+        slotin2=mapp(slotin2)
+        slotout2=mapp(slotout2)
+        slotin3=mapp(slotin3)
+        slotout3=mapp(slotout3)
+        return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta
+    except:
+        print("Single Layer Winding is not possible")
 
 def single_layer_misc_parameter(number_of_slots,number_of_poles):
     number_of_slots = int(number_of_slots)
