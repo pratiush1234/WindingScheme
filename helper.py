@@ -416,7 +416,7 @@ def single_layer_func(number_of_slots,number_of_poles):
         slotout2=mapp(slotout2)
         slotin3=mapp(slotin3)
         slotout3=mapp(slotout3)
-        return slotin1, slotout1, slotin2, slotout2, slotin3, slotout3, theta
+        return slotin1, slotout1, slotin3, slotout3, slotin2, slotout2, theta
     except:
         print("Single Layer Winding is not possible")
 
