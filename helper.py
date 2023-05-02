@@ -430,7 +430,7 @@ def single_layer_misc_parameter(number_of_slots,number_of_poles):
     coil_pitch_elec = coil_span * slot_pitch_elec
     coil_pitch_mech = coil_span * slot_pitch_mech
     # calculation for pitch factor // give angles in radians 
-    chording_angle = (180 - coil_pitch_mech) / 2
+    chording_angle = (180 - coil_pitch_elec) / 2
     number_of_coils = number_of_slots/2
 
     pitch_factor = math.cos((math.pi/180)*chording_angle/2)
